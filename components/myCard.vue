@@ -1,8 +1,5 @@
 <template>
     <div class="my_card">
-        <h3>Ma Montre</h3>
-
-        <p>{{ id_montre }}</p>
         <p>{{ nom }}</p>
         <p>{{ prix_montre }} €</p>
 
@@ -31,9 +28,9 @@ import myButton from "@/components/myButton.vue"
 import { computed } from 'vue'
 
 const props = defineProps({
-  id_montre: String,
+  id_montre: Number,
   nom: String,
-  prix_montre: String,
+  prix_montre: Number,
   boitier_texture: String,
 })
 </script>
