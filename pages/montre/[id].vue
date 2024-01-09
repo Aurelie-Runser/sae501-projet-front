@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main class="fiche_montre">
         <h1>La Montre</h1>
 
         <ul>
@@ -8,40 +8,74 @@
 
         <hr/>
 
-        <form @submit.prevent="modifierMontre" method="put">
+        <form @submit.prevent="modifierMontre" method="put" class="fiche_montre__form">
 
-            <input type="text" name="nom" id="nom" v-model="montrePreview.nom">
+            <input class="fiche_montre__form--input" type="text" name="nom" id="nom" v-model="montrePreview.nom">
 
-            <input disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montrePreview.dernier_modifieur">
+            <input class="fiche_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montrePreview.dernier_modifieur">
 
-            <select name="boitier_texture" id="boitier_texture" v-model="montrePreview.boitier_texture">
+            <select class="fiche_montre__form--select" name="boitier_texture" id="boitier_texture" v-model="montrePreview.boitier_texture">
                 <option v-for="b in boitier_texture" :key="b.id_boitier_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
             </select>
             
-            <select name="boitier_forme" id="boitier_forme" v-model="montrePreview.boitier_forme">
+            <select class="fiche_montre__form--select" name="boitier_forme" id="boitier_forme" v-model="montrePreview.boitier_forme">
                 <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
             </select>
 
-            <select name="bracelet_texture" id="bracelet_texture" v-model="montrePreview.bracelet_texture">
+            <select class="fiche_montre__form--select" name="bracelet_texture" id="bracelet_texture" v-model="montrePreview.bracelet_texture">
                 <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
             </select>
             
-            <select name="pierre" id="pierre" v-model="montrePreview.pierre_nom">
+            <select class="fiche_montre__form--select" name="pierre" id="pierre" v-model="montrePreview.pierre_nom">
                 <option v-for="p in pierre" :key="p.id_pierre" :value="p.nom" @click="updatePrice">{{ p.nom }}</option>
             </select>
 
-            <input type="submit" value="Modifié" />
+            <button type="submit">
+                <MyButton>Enregistrer les Modifications</MyButton>
+            </button>
+
         </form>
+        <MyButton color="black" @click="supp = true">Supprimer</MyButton>
 
         <p>{{ message }}</p>
 
+        <div v-if="supp" class="fiche_montre__popup-supp">
+            <p>Vous êtes sur de vouloir supprimer cette montre ? Cette action est irréversible.</p>
+
+            <MyButton @click="supp = false">Non, je la laisse</MyButton>
+            <MyButton color="black" @click="supprimerMontre">Oui, je veux la supprimer</MyButton>
+        </div>
+
     </main>
 </template>
+
+<style lang="scss">
+.fiche_montre{
+
+    &__popup-supp{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 700px;
+        height: 300px;
+        padding: $m-medium;
+        background: $color-white;
+        border: 2px solid $color-main;
+        border-radius: 10px;
+    }
+}
+</style>
 
 <script setup>
 import { API } from '@/utils/axios.js'
 
 const route = useRoute()
+const router = useRouter()
 const montre = ref([])
 const montrePreview = ref({})
 
@@ -51,6 +85,7 @@ const bracelet_texture = ref([])
 const pierre = ref([])
 
 const message = ref("")
+const supp = ref(false)
 
 // récupérations des tables pour afficher la montre et tous les paramètres
 const getMontre = async () => {
@@ -94,7 +129,7 @@ const updatePrice = async () => {
     montre.value.prix_montre = BoitierTextureSelect.prix + BoitierFormeSelect.prix + BraceletTextureSelect.prix + PierreSelect.prix
 }
 
-// enregistrement de la montre modifier dans la base de données
+// enregistrement de la montre modifiée dans la base de données
 const modifierMontre = async () => {
     try {
         await API.put(`/montre/${route.params.id}/modif`, montrePreview.value);
@@ -102,6 +137,18 @@ const modifierMontre = async () => {
     } catch (error) {
         console.error("Erreur lors de la modification de la montre :", error.message)
         message.value = "Erreur lors de la modification de la montre"
+    }
+}
+
+// suppression de la montre dans la base de données
+const supprimerMontre = async () => {
+    try {
+        await API.delete(`/montre/${route.params.id}/supp`);
+        message.value = "Montre supprimée avec succès";
+        router.push('/montre')
+    } catch (error) {
+        console.error("Erreur lors de la suppression de la montre :", error.message)
+        message.value = "Erreur lors de la suppression de la montre"
     }
 }
 
