@@ -2,6 +2,8 @@
     <main class="les_montres">
         <h1>Liste des Montres</h1>
 
+        <myButton lien="/montre/creation">Créer ma montre de zéro</myButton>
+
         <ul class="les_montres__liste">
             <li v-for="m in montres" class="les_montres__liste--item">
                 <myCard v-bind="m"/>
