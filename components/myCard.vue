@@ -25,9 +25,7 @@
 <script setup>
 import myButton from "@/components/myButton.vue"
 
-import { computed } from 'vue'
-
-const props = defineProps({
+defineProps({
   id_montre: Number,
   nom: String,
   prix_montre: Number,

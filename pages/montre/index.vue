@@ -23,9 +23,6 @@
 </style>
   
 <script setup>
-import myCard from "@/components/myCard.vue"
-
-// import { computed, onMounted, ref } from 'vue'
 import {API} from '@/utils/axios'
 
 const montres = ref([])

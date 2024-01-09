@@ -25,5 +25,4 @@
 </style>
 
 <script setup>
-import myButton from "@/components/myButton.vue"
 </script>
