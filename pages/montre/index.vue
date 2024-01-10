@@ -25,11 +25,13 @@
         </div>
 
         <ul class="les_montres__liste">
-            <li v-for="m in filteredMontres" class="les_montres__liste--item">
+            <li v-for="m in listeMontre" class="les_montres__liste--item">
                 <myCard v-bind="m"/>
             </li>
         </ul>
-        <!-- {{ montres }} -->
+
+        <myButton @click="lessMontre()" v-if="montreMin">Moins de Montre</myButton>
+        <myButton @click="moreMontre()" v-if="montreTotal">Plus de Montre</myButton>
     </main>
 </template>
 
@@ -79,7 +81,6 @@ const getPierre = async () => {
     pierres.value = response.data
 }
 
-
 // Filtrer les montres en fonction de la pierre et de la forme sélectionnées
 const filteredMontres = computed(() => {
     let filtered = montres.value
@@ -97,6 +98,38 @@ const filteredMontres = computed(() => {
     }
 
     return filtered
+})
+
+// nombre de montre à afficher
+const nbrMontre = ref(1)
+
+// augmente le nombre de montre à afficher
+const moreMontre = () =>{
+    nbrMontre.value++
+}
+
+// dimunue le nombre de montre à afficher
+const lessMontre = () =>{
+    nbrMontre.value--
+}
+
+// fonction pour filtrer le nombre de Montre à affiché
+const listeMontre = computed(() => {
+  if (filteredMontres.value){
+    return filteredMontres.value.slice(0, 3*nbrMontre.value)
+  } else{
+    return []
+  }
+})
+
+// pour cacher le bouton "plus de montre" si elles sont toutes affichées
+const montreTotal = computed(() => {
+  return listeMontre.value.length < filteredMontres.value.length
+})
+
+// pour cacher le bouton "plus de montre" si elles sont toutes affichées
+const montreMin = computed(() => {
+  return listeMontre.value.length >+ 3
 })
 
 // chargement de la base de données
