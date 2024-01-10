@@ -4,8 +4,28 @@
 
         <myButton lien="/montre/creation">Créer ma montre de zéro</myButton>
 
+        <div>
+            <label for="boitier_forme">Forme du boitier</label>
+            <select class="les_montres--select" name="boitier_forme" id="boitier_forme" v-model="selectedForme">
+                <option value="">tous</option>
+                <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom">{{ b.nom }}</option>
+            </select>
+            
+            <label for="bracelet_texture">Texture du Bracelet</label>
+            <select class="les_montres--select" name="bracelet_texture" id="bracelet_texture" v-model="selectedBracelet">
+                <option value="">toutes</option>
+                <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom">{{ b.nom }}</option>
+            </select>
+            
+            <label for="pierre">Nom de la Pierre</label>
+            <select class="les_montres--select" name="pierre" id="pierre" v-model="selectedPierre">
+                <option value="">toutes</option>
+                <option v-for="p in pierres" :key="p.id_pierre" :value="p.nom">{{ p.nom }}</option>
+            </select>
+        </div>
+
         <ul class="les_montres__liste">
-            <li v-for="m in montres" class="les_montres__liste--item">
+            <li v-for="m in filteredMontres" class="les_montres__liste--item">
                 <myCard v-bind="m"/>
             </li>
         </ul>
@@ -29,14 +49,61 @@ import {API} from '@/utils/axios'
 
 const montres = ref([])
 
+const boitier_forme = ref([])
+const selectedForme = ref('')
+
+const bracelet_texture = ref([])
+const selectedBracelet = ref('')
+
+const pierres = ref([])
+const selectedPierre = ref('')
+
+// récupération de toutes les tables nécéessaires à l'affichage des montres et des filtres
 const getMontres = async () => {
-  const response = await API.get('/montre')
-  return response.data
+    const response = await API.get(`/montre`)
+    montres.value = response.data
 }
 
-onMounted(async () => {
-  montres.value = await getMontres()
+const getBoitier_Forme = async () => {
+    const response = await API.get(`/boitier_forme`)
+    boitier_forme.value = response.data
+}
+
+const getBracelet_Texture = async () => {
+    const response = await API.get(`/bracelet_texture`)
+    bracelet_texture.value = response.data
+}
+
+const getPierre = async () => {
+    const response = await API.get(`/pierre`)
+    pierres.value = response.data
+}
+
+
+// Filtrer les montres en fonction de la pierre et de la forme sélectionnées
+const filteredMontres = computed(() => {
+    let filtered = montres.value
+
+    if (selectedForme.value) {
+        filtered = filtered.filter(m => m.boitier_forme === selectedForme.value)
+    }
+
+    if (selectedBracelet.value) {
+        filtered = filtered.filter(m => m.bracelet_texture === selectedBracelet.value)
+    }
+
+    if (selectedPierre.value) {
+        filtered = filtered.filter(m => m.pierre_nom === selectedPierre.value)
+    }
+
+    return filtered
 })
 
-console.log(montres)
+// chargement de la base de données
+onMounted(async () => {
+  await getMontres()
+  await getBoitier_Forme()
+  await getBracelet_Texture()
+  await getPierre()
+})
 </script>

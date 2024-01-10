@@ -1,7 +1,18 @@
 <template>
     <div class="my_card">
-        <p>{{ nom }}</p>
-        <p>{{ prix_montre }} €</p>
+        <p>nom : {{ nom }}</p>
+        <br/>
+        <p>dernier_modifieur : {{ dernier_modifieur }}</p>
+        <br/>
+        <p>boitier_texture : {{ boitier_texture }}</p>
+        <br/>
+        <p>boitier_forme : {{ boitier_forme }}</p>
+        <br/>
+        <p>bracelet_texture : {{ bracelet_texture }}</p>
+        <br/>
+        <p>pierre_nom : {{ pierre_nom }}</p>
+        <br/>
+        <p>prix_montre : {{ prix_montre }} €</p>
 
         <myButton :lien="`/montre/${id_montre}`">Voir</myButton>
 
@@ -28,7 +39,11 @@ import myButton from "@/components/myButton.vue"
 defineProps({
   id_montre: Number,
   nom: String,
-  prix_montre: Number,
+  dernier_modifieur: String,
   boitier_texture: String,
+  boitier_forme : String,
+  bracelet_texture : String,
+  pierre_nom : String,
+  prix_montre: Number,
 })
 </script>
