@@ -6,6 +6,9 @@
             <li v-for="(m, key) in montrePreview" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
         </ul>
 
+        <MyButton v-if="!isMontreInPanier" @click="ajouterPanier">Ajouter au Panier</MyButton>
+        <MyButton v-if="isMontreInPanier" @click="supprimerPanier">Supprimer du Panier</MyButton>
+
         <hr/>
 
         <form @submit.prevent="modifierMontre" method="put" class="fiche_montre__form">
@@ -73,6 +76,8 @@
 
 <script setup>
 import { API } from '@/utils/axios.js'
+
+const store = useGlobalStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -152,12 +157,63 @@ const supprimerMontre = async () => {
     }
 }
 
+const panier = ref([])
+const newPanier = ref({})
+
+// récupérations du panier
+const getPanier = async () => {
+    const response = await API.get(`/user/${store.token}/panier`)
+    panier.value = response.data
+}
+
+// fonction qui vérifie si la montre est dans le panier
+const isMontreInPanier = computed(() => {
+  if (montre.value && panier.value) {
+    const montresInPanier = panier.value.map(item => item.id_montre)
+    return montresInPanier.includes(montre.value.id_montre)
+  }
+  return false
+})
+
+// enregistrement de la montre dans le panier
+const ajouterPanier = async () => {
+    newPanier.value.id_montre = montre.value.id_montre
+    newPanier.value.id_user = store.token
+
+    try {
+        await API.post(`/user/panier/add`, newPanier.value);
+        message.value = "Montre mis dans le panier"
+        // rappelle de la fonction pour mettre à jour le bouton
+        getPanier()
+    } catch (error) {
+        console.error("Erreur lors de la mise dans le panier :", error.message)
+        message.value = "Erreur lors de la mise dans le panier"
+    }
+}
+
+// retire la montre du panier
+const supprimerPanier = async () => {
+    newPanier.value.id_montre = montre.value.id_montre
+    newPanier.value.id_user = store.token
+
+    try {
+        await API.delete(`/user/panier/supp/${newPanier.value.id_user}/${newPanier.value.id_montre}`);
+        message.value = "Montre retiré du panier"
+        // rappelle de la fonction pour mettre à jour le bouton
+        getPanier()
+    } catch (error) {
+        console.error("Erreur lors de la supprimession du panier :", error.message)
+        message.value = "Erreur lors de la supprimession du panier"
+    }
+}
+
 onMounted(async () => {
     await getMontre()
     await getBoitier_Texture()
     await getBoitier_Forme()
     await getBracelet_Texture()
     await getPierre()
+    await getPanier()
 })
 
 </script>
