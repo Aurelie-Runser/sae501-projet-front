@@ -16,9 +16,9 @@
         </div>
 
         <div>
-            <h2>Connection</h2>
+            <h2>Connexion</h2>
 
-            <form @submit.prevent="connection" method="post">
+            <form @submit.prevent="connexion" method="post">
                 <input type="text" name="pesudo" id="pesudo" required placeholder="Pseudo" v-model="userCo.pseudo">
                 <input type="text" name="mdp" id="mdp" required placeholder="Mot de Passe" v-model="userCo.mdp">
 
@@ -54,11 +54,10 @@ const inscription = async () => {
 }
 
 // enregistrement de la montre modifiée dans la base de données
-const connection = async () => {
+const connexion = async () => {
     try {
         const response = await API.post(`/login`, userCo.value)
         const { token } = response.data // Récupérer le token depuis la réponse API
-        console.log(token)
         store.setToken(token) // Enregistrer le token dans le store Pinia
         message.value = "Vous êtes bien connecté"
     } catch (error) {
