@@ -2,11 +2,17 @@
     <div class="header">
         <nav class="header__nav">
             <ul class="header__liste">
-                <li class="header__item" v-for="lien in liens" :key="lien">
-                    <RouterLink :to="lien[1]">{{ lien[0] }}</RouterLink>
+                <li class="header__item">
+                    <RouterLink to="/">Accueil</RouterLink>
+                </li>
+                <li class="header__item">
+                    <RouterLink to="/montre">Les Montres</RouterLink>
+                </li>
+                <li class="header__item" v-if="!store.token">
+                    <RouterLink to="/login">Login</RouterLink>
                 </li>
                 <li class="header__item" v-if="store.token">
-                    <RouterLink to="/panier">Panier</RouterLink>
+                    <RouterLink to="/compte">Mon Compte</RouterLink>
                 </li>
             </ul>
         </nav>
