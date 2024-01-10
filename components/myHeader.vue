@@ -5,6 +5,9 @@
                 <li class="header__item" v-for="lien in liens" :key="lien">
                     <RouterLink :to="lien[1]">{{ lien[0] }}</RouterLink>
                 </li>
+                <li class="header__item" v-if="store.token">
+                    <RouterLink to="/panier">Panier</RouterLink>
+                </li>
             </ul>
         </nav>
     </div>
@@ -40,7 +43,7 @@
 </style>
 
 <script setup>
-import { RouterLink } from 'vue-router';
+const store = useGlobalStore()
 
 const liens = [["Accueil", "/"],
   ["Montres", "/montre"],
