@@ -9,17 +9,11 @@ export default defineNuxtConfig({
     },
   ],
 
-  // modules: [
-  //   "@pinia/nuxt"
-  // ],
+  modules: [
+    "@pinia/nuxt"
+  ],
 
   css: ["@/scss/main.scss"],
-
-  // runtimeConfig: {
-  //   public: {
-  //     apiRecetteUrl: "",
-  //   },
-  // },
 
   vite: {
     css: {
