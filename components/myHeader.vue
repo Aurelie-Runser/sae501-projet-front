@@ -20,14 +20,13 @@
 </template>
 
 <style lang="scss" scoped>
-
 .header {
     z-index: 50;
-    position: sticky;
+    position: fixed;
     top: 0;
     display: block;
     width: 100vw;
-    padding: $m-small;
+    padding: $m-litle;
     background: $color-white;
 
     &__liste{
