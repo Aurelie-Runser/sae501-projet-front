@@ -1,6 +1,6 @@
 <template>
     <main>
-        <h1>Mon Compte</h1>
+        <myTitle>Mon Compte</myTitle>
 
         <h2>Mes Montres</h2>
         <ul>

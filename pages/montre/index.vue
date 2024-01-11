@@ -1,6 +1,6 @@
 <template>
     <main class="les_montres">
-        <h1>Liste des Montres</h1>
+        <myTitle>Les Montres</myTitle>
 
         <myButton lien="/montre/creation">Créer ma montre de zéro</myButton>
 

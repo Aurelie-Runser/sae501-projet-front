@@ -1,6 +1,6 @@
 <template>
     <main>
-        <h1>Page Login</h1>
+        <myTitle>Login</myTitle>
 
         <div>
             <h2>Inscription</h2>

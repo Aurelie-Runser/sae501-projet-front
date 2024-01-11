@@ -1,6 +1,6 @@
 <template>
     <main class="fiche_montre">
-        <h1>La Montre</h1>
+        <myTitle>La Montre : {{ montrePreview.nom }}</myTitle>
 
         <div class="fiche_montre__model">
             <ThreeSeen v-bind="montrePreview"/>
@@ -10,8 +10,8 @@
             <li v-for="(m, key) in montrePreview" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
         </ul> -->
 
-        <MyButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</MyButton>
-        <MyButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</MyButton>
+        <myButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</myButton>
+        <myButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</myButton>
 
         <hr/>
 
@@ -44,19 +44,19 @@
             </select>
 
             <button type="submit">
-                <MyButton>Enregistrer les Modifications</MyButton>
+                <myButton>Enregistrer les Modifications</myButton>
             </button>
 
         </form>
-        <MyButton color="black" @click="supp = true">Supprimer</MyButton>
+        <myButton color="black" @click="supp = true">Supprimer</myButton>
 
         <p>{{ message }}</p>
 
         <div v-if="supp" class="fiche_montre__popup-supp">
             <p>Vous êtes sur de vouloir supprimer cette montre ? Cette action est irréversible.</p>
 
-            <MyButton @click="supp = false">Non, je la laisse</MyButton>
-            <MyButton color="black" @click="supprimerMontre">Oui, je veux la supprimer</MyButton>
+            <myButton @click="supp = false">Non, je la laisse</myButton>
+            <myButton color="black" @click="supprimerMontre">Oui, je veux la supprimer</myButton>
         </div>
 
     </main>

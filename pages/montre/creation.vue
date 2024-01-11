@@ -1,6 +1,6 @@
 <template>
     <main>
-        <h1>Création d'une Montre</h1>
+        <myTitle>Création d'une montre</myTitle>
 
         <ThreeSeen v-bind="montre"/>
 
