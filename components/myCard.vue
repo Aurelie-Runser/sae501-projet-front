@@ -1,5 +1,7 @@
 <template>
     <div class="my_card">
+        <ThreeSeen :boitier_texture="boitier_texture" :boitier_forme="boitier_forme" :bracelet_texture="bracelet_texture" :pierre_couleur="pierre_couleur" :main_color="main_color"/>
+
         <p>nom : {{ nom }}</p>
         <br/>
         <p>dernier_modifieur : {{ dernier_modifieur }}</p>
@@ -11,6 +13,10 @@
         <p>bracelet_texture : {{ bracelet_texture }}</p>
         <br/>
         <p>pierre_nom : {{ pierre_nom }}</p>
+        <br/>
+        <p>pierre_couleur : {{ pierre_couleur }}</p>
+        <br/>
+        <p>main_color : {{ main_color }}</p>
         <br/>
         <p>prix_montre : {{ prix_montre }} €</p>
 
@@ -44,6 +50,8 @@ defineProps({
   boitier_forme : String,
   bracelet_texture : String,
   pierre_nom : String,
+  pierre_couleur : String,
+  main_color : String,
   prix_montre: Number,
 })
 </script>
