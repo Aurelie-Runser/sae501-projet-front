@@ -32,6 +32,15 @@
             background: lighten($color-black, 25%);
         }
     }
+    
+    &.-white{
+        color: $color-black;
+        background: $color-white;
+
+        &:hover{
+            background: darken($color-white, 25%);
+        }
+    }
 }
 </style>
 
@@ -45,5 +54,6 @@ const props = defineProps({
 
 const className = computed(() => ({
   " -black": props.color === "black",
+  " -white": props.color === "white",
 }));
 </script>
