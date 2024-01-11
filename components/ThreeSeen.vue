@@ -1,126 +1,14 @@
 <template>
-    <div>
+    <div class="canvas_container" ref="canvasContainer">
         <canvas ref="canvas"/>
-        <p>boitier_texture {{ boitier_texture }}</p>
-      <!-- <div class="mt-2">
-        <div>
-          <h2 class="font-bold">Texture du Bracelet :</h2>
-        </div>
-        <div class="flex gap-2">
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTexture('texture-cuir-blanc.jpg')"
-          >
-            Cuir Blanc
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTexture('texture-tissus-or.jpg')"
-          >
-            Tissu Or
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTexture('texture-tissus-marron.jpg')"
-          >
-            Tissu Marron
-          </button>
-        </div>
-      </div>
-      <div class="mt-2">
-        <div>
-          <h2 class="font-bold">Texture du Boitier Rond</h2>
-        </div>
-        <div class="flex gap-2">
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTextureBoitierRond('background_black01.png')"
-          >
-            Black 01
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTextureBoitierRond('background_black02.png')"
-          >
-            Black 02
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTextureBoitierRond('background_fluo01.png')"
-          >
-            Fluo
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTextureBoitierRond('background_mickey.png')"
-          >
-            Mickey
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTextureBoitierRond('background_white01.png')"
-          >
-            White 01
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTextureBoitierRond('background_white02.png')"
-          >
-            White 02
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTextureBoitierRond('background_white03.png')"
-          >
-            White 03
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTextureBoitierRond('background_white04.png')"
-          >
-            White 04
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changeTextureBoitierRond('background_white05.png')"
-          >
-            White 05
-          </button>
-        </div>
-      </div>
-      <div class="flex gap-2 my-2">
-        <div>
-          <h2 class="font-bold">Couleur du Fermoir</h2>
-        </div>
-        <input type="color" @input="handleColorChange" />
-      </div>
-      <div class="mt-2">
-        <div>
-          <h2 class="font-bold">Type de Pierre Précieuse</h2>
-        </div>
-        <div class="flex gap-2">
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changePierreColor('rubis')"
-          >
-            Rubis
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changePierreColor('diamant')"
-          >
-            Diamant
-          </button>
-          <button
-            class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-            @click="changePierreColor('émeraude')"
-          >
-            Émeraude
-          </button>
-        </div>
-      </div> -->
     </div>
 </template>
+
+<style>
+.canvas_container{
+    width: 100%;
+}
+</style>
   
 <script setup>
 import { ref, toRefs, onMounted, onUpdated, onBeforeUnmount } from "vue";
@@ -133,12 +21,13 @@ const props = defineProps({
     boitier_texture : String,
     boitier_forme : String,
     bracelet_texture : String,
-    pierre_nom : String
+    pierre_couleur : String,
+    main_color : String
 })
 
 const proprietes = toRefs(props)
-const pierre_couleur = ref([])
   
+const canvasContainer = ref(null);
 const canvas = ref(null);
 let controls, scene, camera, renderer, animationId = null;
 let clock = new THREE.Clock();
@@ -159,9 +48,12 @@ const initScene = () => {
         0.1,
         1000
     );
+    const width = canvasContainer.value.clientWidth;
+    const height = canvasContainer.value.clientWidth/2;
   
     renderer = new THREE.WebGLRenderer({ canvas: canvas.value });
-    renderer.setSize(1300, 700);
+    // renderer.setSize(1300, 700);
+    renderer.setSize(width, height);
     renderer.setClearColor(0x222222, 1);
     controls = new OrbitControls(camera, renderer.domElement);
   
@@ -190,31 +82,6 @@ const animate = () => {
     animationId = requestAnimationFrame(animate);
     renderer.render(scene, camera);
 };
-  
-const changePierreColor = (type) => {
-    let color;
-  
-    switch (type) {
-        case "rubis":
-            color = 0xff0000; // Rouge
-            break;
-        case "diamant":
-            color = 0x0000ff; // Bleu
-            break;
-        case "émeraude":
-            color = 0x00ff00; // Vert
-            break;
-        default:
-            color = 0xffffff; // Blanc par défaut
-    }
-  
-    if (iPierre) iPierre.material.color.set(color);
-};
-  
-const handleColorChange = (event) => {
-    const newColor = event.target.value;
-    changeFermoirColor(newColor);
-};
 
 const changeFermoirColor = (color) => {
     // Convertir la couleur hexadécimale en décimal
@@ -229,17 +96,17 @@ function onLoaded(collada) {
   
     aiguilleHeures = objects.getObjectByName("aiguille_heures");
     aiguilleHeures.material = new THREE.MeshBasicMaterial({
-        color: 0xff0000,
+        color: proprietes.main_color.value,
     });
 
     aiguilleMinutes = objects.getObjectByName("aiguille_minutes");
     aiguilleMinutes.material = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
+        color: proprietes.main_color.value,
     });
 
     aiguilleSecondes = objects.getObjectByName("aiguille_secondes");
     aiguilleSecondes.material = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
+        color: proprietes.main_color.value,
     });
   
     if (proprietes.boitier_forme.value == "boitier_rond"){
@@ -258,20 +125,20 @@ function onLoaded(collada) {
   
     iBouton = objects.getObjectByName("bouton");
     iBouton.material = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
+        color: proprietes.main_color.value,
     });
 
-    if (proprietes.pierre_nom.value == "rubis"){
-        pierre_couleur.value = "#f00"
-    } else if (proprietes.pierre_nom.value == "diamant"){
-        pierre_couleur.value = "#00f"
-    } else if (proprietes.pierre_nom.value == "émeraude"){
-        pierre_couleur.value = "#0f0"
-    }
+    // if (proprietes.pierre_couleur.value == "rubis"){
+    //     pierre_couleur.value = "#f00"
+    // } else if (proprietes.pierre_couleur.value == "diamant"){
+    //     pierre_couleur.value = "#00f"
+    // } else if (proprietes.pierre_couleur.value == "émeraude"){
+    //     pierre_couleur.value = "#0f0"
+    // }
   
     iPierre = objects.getObjectByName("pierre");
     iPierre.material = new THREE.MeshBasicMaterial({
-        color: pierre_couleur.value,
+        color: proprietes.pierre_couleur.value,
     });
   
     let iPierre2 = iPierre.clone();
@@ -292,7 +159,7 @@ function onLoaded(collada) {
   
     iFermoir = objects.getObjectByName("fermoir");
     iFermoir.material = new THREE.MeshBasicMaterial({
-        color: 0x000000,
+        color: proprietes.main_color.value,
     });
   
     scene.add(
