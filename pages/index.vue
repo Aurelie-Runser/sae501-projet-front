@@ -14,7 +14,8 @@
 
 <style lang="scss">
 .accueil{
-    min-height: 100vh;
+    max-height: 90vh;
+    overflow: hidden;
     background-image: url("@/img/montre.jpg");    
     background-position: top center;
 
