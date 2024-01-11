@@ -13,10 +13,9 @@
 
 <style lang="scss">
 .accueil{
-    // border: red solid 2px;
     min-height: 100vh;
-    background-image: linear-gradient(rgba($color-black, 0.2), rgba($color-black, 0.2)),
-                  url("@/img/montre.jpg");    
+    background-image: linear-gradient(rgba($color-white, 0.1), rgba($color-white, 0.1)),
+                    url("@/img/montre.jpg");    
 
     &__titre{
         color: $color-white;
