@@ -2,9 +2,11 @@
     <main class="fiche_montre">
         <h1>La Montre</h1>
 
-        <ul>
+        <ThreeSeen v-bind="montrePreview"/>
+
+        <!-- <ul>
             <li v-for="(m, key) in montrePreview" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
-        </ul>
+        </ul> -->
 
         <MyButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</MyButton>
         <MyButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</MyButton>

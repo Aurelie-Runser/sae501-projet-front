@@ -2,6 +2,8 @@
     <main>
         <h1>Création d'une Montre</h1>
 
+        <ThreeSeen v-bind="montrePreview"/>
+
         <ul>
             <li v-for="(m, key) in montrePreview" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
         </ul>
@@ -43,7 +45,19 @@ import { API } from '@/utils/axios.js'
 
 const route = useRoute()
 const montre = ref([])
-const montrePreview = ref({})
+const montrePreview = ref({
+    nom : "",
+        dernier_modifieur : "Aurélie",
+        boitier_texture : "black01",
+        boitier_texture_prix  : 1.77,
+        boitier_forme : "boitier_carre",
+        boitier_forme_prix : 2.87,
+        bracelet_texture : "tissus-marron",
+        bracelet_texture_prix  : 5.80,
+        pierre_nom : "rubis",
+        pierre_prix : 100,
+        // montre_prix : boitier_texture.prix + boitier_forme.prix + bracelet_texture.prix + pierre.prix
+})
 
 const boitier_texture = ref([])
 const boitier_forme = ref([])
@@ -51,24 +65,6 @@ const bracelet_texture = ref([])
 const pierre = ref([])
 
 const message = ref("")
-
-// récupérations des tables pour afficher la montre et tous les paramètres
-const getMontre = async () => {
-    montre.value = {
-        nom : "",
-        dernier_modifieur : "Aurélie",
-        boitier_texture : boitier_texture.value[0].nom,
-        boitier_texture_prix  : boitier_texture.value[0].prix,
-        boitier_forme : boitier_forme.value[0].nom,
-        boitier_forme_prix : boitier_forme.value[0].prix,
-        bracelet_texture : bracelet_texture.value[0].nom,
-        bracelet_texture_prix  : bracelet_texture.value[0].prix,
-        pierre_nom : pierre.value[0].nom,
-        pierre_prix : pierre.value[0].prix,
-        montre_prix : boitier_texture.value[0].prix + boitier_forme.value[0].prix + bracelet_texture.value[0].prix + pierre.value[0].prix
-    }
-    montrePreview.value = montre.value
-}
 
 const getBoitier_Texture = async () => {
     const response = await API.get(`/boitier_texure`)
@@ -121,7 +117,6 @@ onMounted(async () => {
     await getBoitier_Forme()
     await getBracelet_Texture()
     await getPierre()
-    await getMontre()
 })
 
 </script>
