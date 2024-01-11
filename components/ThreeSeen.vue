@@ -86,14 +86,6 @@ const animate = () => {
     animationId = requestAnimationFrame(animate);
     renderer.render(scene, camera);
 };
-
-const changeFermoirColor = (color) => {
-    // Convertir la couleur hexadécimale en décimal
-    const decimalColor = parseInt(color.slice(1), 16);
-  
-    // Mettre à jour la couleur du matériau iFermoir
-    if (iFermoir) iFermoir.material.color.set(decimalColor);
-};
   
 function onLoaded(collada) {
     let objects = collada.scene;
@@ -119,12 +111,11 @@ function onLoaded(collada) {
         boitierForme= objects.getObjectByName("boitier_carre");
     }
     
-    // boitierRond.material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const textureLoaderBoitierRond = new TextureLoader();
-    const textureBoitierRond = textureLoaderBoitierRond.load(`/images/background_${proprietes.boitier_texture.value}.png`);
+    const textureLoaderBoitier = new TextureLoader();
+    const textureBoitier = textureLoaderBoitier.load(`/images/background_${proprietes.boitier_texture.value}.png`);
     
     boitierForme.material = new THREE.MeshBasicMaterial({
-        map: textureBoitierRond,
+        map: textureBoitier,
     });
   
     iBouton = objects.getObjectByName("bouton");
