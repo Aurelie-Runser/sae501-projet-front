@@ -5,7 +5,8 @@
 
             <div class="accueil__boutons">
                 <myButton lien="/montre">Voir les Montres</myButton>
-                <myButton lien="/login" color="black">Se Connecter</myButton>
+                <myButton v-if="!store.token" lien="/login" color="white">Login</myButton>
+                <myButton v-if="store.token" lien="/compte" color="white">Mon Compte</myButton>
             </div>
         </section>
     </main>
@@ -14,8 +15,8 @@
 <style lang="scss">
 .accueil{
     min-height: 100vh;
-    background-image: linear-gradient(rgba($color-white, 0.1), rgba($color-white, 0.1)),
-                    url("@/img/montre.jpg");    
+    background-image: url("@/img/montre.jpg");    
+    background-position: top center;
 
     &__titre{
         color: $color-white;
@@ -33,4 +34,6 @@
 </style>
 
 <script setup>
+const store = useGlobalStore()
+
 </script>
