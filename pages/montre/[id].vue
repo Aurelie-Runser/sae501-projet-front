@@ -6,8 +6,8 @@
             <li v-for="(m, key) in montrePreview" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
         </ul>
 
-        <MyButton v-if="!isMontreInPanier" @click="ajouterPanier">Ajouter au Panier</MyButton>
-        <MyButton v-if="isMontreInPanier" @click="supprimerPanier">Supprimer du Panier</MyButton>
+        <MyButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</MyButton>
+        <MyButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</MyButton>
 
         <hr/>
 
