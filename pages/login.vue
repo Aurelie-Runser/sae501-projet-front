@@ -37,7 +37,7 @@ import {API} from '@/utils/axios'
 import { useGlobalStore } from '@/stores/global'
 const store = useGlobalStore()
 
-const route = useRoute()
+const router = useRouter()
 const userNew = ref({})
 const userCo = ref({})
 const message = ref("")
@@ -60,6 +60,7 @@ const connexion = async () => {
         const { token } = response.data // Récupérer le token depuis la réponse API
         store.setToken(token) // Enregistrer le token dans le store Pinia
         message.value = "Vous êtes bien connecté"
+        router.push('/compte')
     } catch (error) {
         console.error("Erreur lors de la connexion :", error.message)
         message.value = "Erreur lors de la connexion"

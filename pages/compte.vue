@@ -15,11 +15,15 @@
                 <myCard v-bind="p"/>
             </li>
         </ul>
+
+        <myButton @click="deconnexion" color="black">Je me déconnecte</myButton>
     </main>
 </template>
   
 <script setup>
 import { API } from '@/utils/axios.js'
+
+const router = useRouter()
 
 const mesMontres = ref([])
 const panier = ref([])
@@ -36,6 +40,12 @@ const getMontres = async () => {
 const getPanier = async () => {
     const response = await API.get(`/user/${store.token}/panier`)
     panier.value = response.data
+}
+
+// enregistrement de la montre modifiée dans la base de données
+const deconnexion = async () => {
+    store.clearToken() // Enregistrer le token dans le store Pinia
+    router.push('/login')
 }
 
 onMounted(async () => {
