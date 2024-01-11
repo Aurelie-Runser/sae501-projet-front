@@ -22,7 +22,7 @@
 <style lang="scss" scoped>
 .header {
     z-index: 50;
-    position: fixed;
+    position: sticky;
     top: 0;
     display: block;
     width: 100vw;
@@ -38,10 +38,11 @@
     }
 
     &__item{
+        font-size: $font_size-small+0.25rem;
         font-weight: $font_weight-semibold;
 
         &:hover{
-            color: $color-main;
+            color: darken($color-main, 10%);
         }
     }
 }   
