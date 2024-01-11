@@ -2,7 +2,9 @@
     <main class="fiche_montre">
         <h1>La Montre</h1>
 
-        <ThreeSeen v-bind="montrePreview"/>
+        <div class="fiche_montre__model">
+            <ThreeSeen v-bind="montrePreview"/>
+        </div>
 
         <!-- <ul>
             <li v-for="(m, key) in montrePreview" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
@@ -31,9 +33,11 @@
                 <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
             </select>
             
-            <select class="fiche_montre__form--select" name="pierre" id="pierre" v-model="montrePreview.pierre_nom">
-                <option v-for="p in pierre" :key="p.id_pierre" :value="p.nom" @click="updatePrice">{{ p.nom }}</option>
+            <select class="fiche_montre__form--select" name="pierre" id="pierre" v-model="montrePreview.pierre_couleur">
+                <option v-for="p in pierre" :key="p.id_pierre" :value="p.couleur" @click="updatePrice">{{ p.nom }}</option>
             </select>
+
+            <input type="color" name="color" id="color" v-model="montrePreview.main_color">
 
             <button type="submit">
                 <MyButton>Enregistrer les Modifications</MyButton>
@@ -56,6 +60,12 @@
 
 <style lang="scss">
 .fiche_montre{
+
+    &__model{
+        border: 2px solid red;
+        width: 50%;
+        aspect-ratio: 1/1;
+    }
 
     &__popup-supp{
         position: fixed;
@@ -126,7 +136,7 @@ const updatePrice = async () => {
     const BoitierTextureSelect = boitier_texture.value.find(bot => bot.nom === montre.value.boitier_texture )
     const BoitierFormeSelect = boitier_forme.value.find(bot => bot.nom === montre.value.boitier_forme )
     const BraceletTextureSelect = bracelet_texture.value.find(brt => brt.nom === montre.value.bracelet_texture )
-    const PierreSelect = pierre.value.find(p => p.nom === montre.value.pierre_nom)
+    const PierreSelect = pierre.value.find(p => p.couleur === montre.value.pierre_couleur)
 
     montre.value.boitier_texture_prix = BoitierTextureSelect.prix
     montre.value.boitier_forme_prix = BoitierFormeSelect.prix

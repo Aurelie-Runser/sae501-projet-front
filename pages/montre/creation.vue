@@ -28,9 +28,11 @@
                 <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
             </select>
 
-            <select class="fiche_montre__form--select" name="pierre" id="pierre" v-model="montrePreview.pierre_nom">
-                <option v-for="p in pierre" :key="p.id_pierre" :value="p.nom" @click="updatePrice">{{ p.nom }}</option>
+            <select class="fiche_montre__form--select" name="pierre" id="pierre" v-model="montrePreview.pierre_couleur">
+                <option v-for="p in pierre" :key="p.id_pierre" :value="p.couleur" @click="updatePrice">{{ p.nom }}</option>
             </select>
+
+            <input type="color" name="color" id="color" v-model="montrePreview.main_color">
 
             <button type="submit">
                 <MyButton>Enregistrer la Montre</MyButton>
@@ -54,7 +56,8 @@ const montrePreview = ref({
         boitier_forme_prix : 2.87,
         bracelet_texture : "tissus-marron",
         bracelet_texture_prix  : 5.80,
-        pierre_nom : "rubis",
+        pierre_couleur : "#ff0000",
+        main_color : "#000000",
         pierre_prix : 100,
         // montre_prix : boitier_texture.prix + boitier_forme.prix + bracelet_texture.prix + pierre.prix
 })
@@ -91,7 +94,7 @@ const updatePrice = async () => {
     const BoitierTextureSelect = boitier_texture.value.find(bot => bot.nom === montre.value.boitier_texture )
     const BoitierFormeSelect = boitier_forme.value.find(bot => bot.nom === montre.value.boitier_forme )
     const BraceletTextureSelect = bracelet_texture.value.find(brt => brt.nom === montre.value.bracelet_texture )
-    const PierreSelect = pierre.value.find(p => p.nom === montre.value.pierre_nom)
+    const PierreSelect = pierre.value.find(p => p.couleur === montre.value.pierre_couleur)
 
     montre.value.boitier_texture_prix = BoitierTextureSelect.prix
     montre.value.boitier_forme_prix = BoitierFormeSelect.prix
@@ -103,6 +106,7 @@ const updatePrice = async () => {
 
 // enregistrement de la montre modifiée dans la base de données
 const creerMontre = async () => {
+    console.log(montrePreview.value)
     try {
         await API.post(`/montre/add`, montrePreview.value);
         message.value = "Montre créée avec succès"
