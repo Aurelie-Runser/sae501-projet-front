@@ -36,8 +36,12 @@
             <select class="fiche_montre__form--select" name="pierre" id="pierre" v-model="montrePreview.pierre_couleur">
                 <option v-for="p in pierre" :key="p.id_pierre" :value="p.couleur" @click="updatePrice">{{ p.nom }}</option>
             </select>
-
-            <input type="color" name="color" id="color" v-model="montrePreview.main_color">
+            
+            <input type="color" name="main_color" id="main_color" v-model="montrePreview.main_color">
+            
+            <select class="fiche_montre__form--select" name="fond_nom" id="fond_nom" v-model="montrePreview.fond_nom">
+                <option v-for="f in fond" :key="f.id_fond" :value="f.nom">{{ f.nom }}</option>
+            </select>
 
             <button type="submit">
                 <MyButton>Enregistrer les Modifications</MyButton>
@@ -64,7 +68,6 @@
     &__model{
         border: 2px solid red;
         width: 50%;
-        aspect-ratio: 1/1;
     }
 
     &__popup-supp{
@@ -100,6 +103,7 @@ const boitier_texture = ref([])
 const boitier_forme = ref([])
 const bracelet_texture = ref([])
 const pierre = ref([])
+const fond = ref([])
 
 const message = ref("")
 const supp = ref(false)
@@ -129,6 +133,11 @@ const getBracelet_Texture = async () => {
 const getPierre = async () => {
     const response = await API.get(`/pierre`)
     pierre.value = response.data
+}
+
+const getFond = async () => {
+    const response = await API.get(`/fond`)
+    fond.value = response.data
 }
 
 // modification des prix en fonction des noms de chaque élément
@@ -225,6 +234,7 @@ onMounted(async () => {
     await getBoitier_Forme()
     await getBracelet_Texture()
     await getPierre()
+    await getFond()
     await getPanier()
 })
 

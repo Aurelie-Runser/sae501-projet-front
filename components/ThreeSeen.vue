@@ -22,7 +22,8 @@ const props = defineProps({
     boitier_forme : String,
     bracelet_texture : String,
     pierre_couleur : String,
-    main_color : String
+    main_color : String,
+    fond_nom : String
 })
 
 const proprietes = toRefs(props)
@@ -56,6 +57,9 @@ const initScene = () => {
     renderer.setSize(width, height);
     renderer.setClearColor(0x222222, 1);
     controls = new OrbitControls(camera, renderer.domElement);
+
+    const textureLoaderScene = new THREE.TextureLoader();
+    scene.background = textureLoaderScene.load(`/images/fond_${proprietes.fond_nom.value}.jpg`);
   
     var loader = new ColladaLoader();
     loader.load("/models/montre.dae", onLoaded, onProgress, onError);
@@ -127,14 +131,6 @@ function onLoaded(collada) {
     iBouton.material = new THREE.MeshBasicMaterial({
         color: proprietes.main_color.value,
     });
-
-    // if (proprietes.pierre_couleur.value == "rubis"){
-    //     pierre_couleur.value = "#f00"
-    // } else if (proprietes.pierre_couleur.value == "diamant"){
-    //     pierre_couleur.value = "#00f"
-    // } else if (proprietes.pierre_couleur.value == "émeraude"){
-    //     pierre_couleur.value = "#0f0"
-    // }
   
     iPierre = objects.getObjectByName("pierre");
     iPierre.material = new THREE.MeshBasicMaterial({
