@@ -1,56 +1,98 @@
 <template>
     <main class="fiche_montre">
-        <myTitle>La Montre : {{ montrePreview.nom }}</myTitle>
+        <myTitle>{{ montrePreview.nom }}</myTitle>
 
-        <div class="fiche_montre__model">
-            <ThreeSeen v-bind="montrePreview"/>
+        <div class="fiche_montre__rendu">
+            <div class="fiche_montre__rendu--model">
+                <ThreeSeen v-bind="montrePreview"/>
+            </div>
+
+            <ul class="fiche_montre__rendu--infos">
+                <li class="info">
+                    Bracelet Texture (<span class="info__valeur">{{ montrePreview.bracelet_texture }}</span>) :
+                    <span class="info__prix">{{ montrePreview.bracelet_texture_prix }} €</span>
+                </li>
+                <li class="info">
+                    Boitier Texture (<span class="info__valeur">{{ montrePreview.boitier_texture }}</span>) :
+                    <span class="info__prix">{{ montrePreview.boitier_texture_prix }} €</span>
+                </li>
+                <li class="info">
+                    Boitier Forme (<span class="info__valeur">{{ montrePreview.boitier_forme }}</span>) :
+                    <span class="info__prix">{{ montrePreview.boitier_forme_prix }} €</span>
+                </li>
+                <li class="info">
+                    Pierre (<span class="info__valeur">{{ montrePreview.pierre_nom }}</span>) :
+                    <span class="info__prix">{{ montrePreview.prix_montre }} €</span>
+                </li>
+                <li class="info">
+                    Prix total : <span class="info__prix">{{ montrePreview.prix_montre }} €</span>
+                </li>
+                
+                <li><myButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</myButton></li>
+                <li> <myButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</myButton></li>
+
+                <li>{{ message }}</li>
+            </ul>
         </div>
 
-        <!-- <ul>
-            <li v-for="(m, key) in montrePreview" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
-        </ul> -->
-
-        <myButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</myButton>
-        <myButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</myButton>
-
-        <hr/>
 
         <form @submit.prevent="modifierMontre" method="put" class="fiche_montre__form">
 
-            <input class="fiche_montre__form--input" type="text" name="nom" id="nom" v-model="montrePreview.nom">
-
-            <input class="fiche_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montrePreview.dernier_modifieur">
-
-            <select class="fiche_montre__form--select" name="boitier_texture" id="boitier_texture" v-model="montrePreview.boitier_texture">
-                <option v-for="b in boitier_texture" :key="b.id_boitier_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
-            </select>
+            <div class="fiche_montre__form--input">
+                <label for="nom">Nom de la Montre</label>
+                <input class="fiche_montre__form--input" type="text" name="nom" id="nom" v-model="montrePreview.nom">
+            </div>
             
-            <select class="fiche_montre__form--select" name="boitier_forme" id="boitier_forme" v-model="montrePreview.boitier_forme">
-                <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
-            </select>
+            <div class="fiche_montre__form--input">
+                <label for="dernier_modifieur">Pseudo du créateur</label>
+                <input class="fiche_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montrePreview.dernier_modifieur">
+            </div>
+            
+            <div class="fiche_montre__form--input">
+                <label for="boitier_texture">Texture du Boitier</label>
+                <select class="fiche_montre__form--select" name="boitier_texture" id="boitier_texture" v-model="montrePreview.boitier_texture">
+                    <option v-for="b in boitier_texture" :key="b.id_boitier_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
+                </select>
+            </div>
+            
+            <div class="fiche_montre__form--input">
+                <label for="boitier_forme">Forme du Boitier</label>
+                <select class="fiche_montre__form--select" name="boitier_forme" id="boitier_forme" v-model="montrePreview.boitier_forme">
+                    <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
+                </select>
+            </div>
+            
+            <div class="fiche_montre__form--input">
+                <label for="bracelet_texture">Texture du Bracelet</label>
+                <select class="fiche_montre__form--select" name="bracelet_texture" id="bracelet_texture" v-model="montrePreview.bracelet_texture">
+                    <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
+                </select>
+            </div>
+            
+            <div class="fiche_montre__form--input">
+                <label for="pierre">Pierre Préciseuse</label>
+                <select class="fiche_montre__form--select" name="pierre" id="pierre" v-model="montrePreview.pierre_couleur">
+                    <option v-for="p in pierre" :key="p.id_pierre" :value="p.couleur" @click="updatePrice">{{ p.nom }}</option>
+                </select>
+            </div>
+            
+            <div class="fiche_montre__form--input">
+                <label for="main_color">Couleur</label>
+                <input type="color" name="main_color" id="main_color" v-model="montrePreview.main_color">
+            </div>
+            
+            <div class="fiche_montre__form--input">
+                <label for="fond_nom">Fond</label>
+                <select class="fiche_montre__form--select" name="fond_nom" id="fond_nom" v-model="montrePreview.fond_nom">
+                    <option v-for="f in fond" :key="f.id_fond" :value="f.nom">{{ f.nom }}</option>
+                </select>
+            </div>
 
-            <select class="fiche_montre__form--select" name="bracelet_texture" id="bracelet_texture" v-model="montrePreview.bracelet_texture">
-                <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
-            </select>
-            
-            <select class="fiche_montre__form--select" name="pierre" id="pierre" v-model="montrePreview.pierre_couleur">
-                <option v-for="p in pierre" :key="p.id_pierre" :value="p.couleur" @click="updatePrice">{{ p.nom }}</option>
-            </select>
-            
-            <input type="color" name="main_color" id="main_color" v-model="montrePreview.main_color">
-            
-            <select class="fiche_montre__form--select" name="fond_nom" id="fond_nom" v-model="montrePreview.fond_nom">
-                <option v-for="f in fond" :key="f.id_fond" :value="f.nom">{{ f.nom }}</option>
-            </select>
-
-            <button type="submit">
-                <myButton>Enregistrer les Modifications</myButton>
-            </button>
+            <input class="fiche_montre__form--bouton" type="submit" value="Enregistrer les Modifications"/>
 
         </form>
-        <myButton color="black" @click="supp = true">Supprimer</myButton>
 
-        <p>{{ message }}</p>
+        <myButton class="fiche_montre__bouton--supp" color="black" @click="supp = true">Supprimer</myButton>
 
         <div v-if="supp" class="fiche_montre__popup-supp">
             <p>Vous êtes sur de vouloir supprimer cette montre ? Cette action est irréversible.</p>
@@ -65,9 +107,54 @@
 <style lang="scss">
 .fiche_montre{
 
-    &__model{
-        border: 2px solid red;
-        width: 50%;
+    &__rendu{
+        display: flex;
+
+        &--infos{
+            display: flex;
+            flex-direction: column;
+            gap: $m-small;
+            margin: auto;
+           
+            
+            .info{
+
+                &__valeur{
+                    font-weight: $font-weight-medium;
+                }
+
+                &__prix{
+                    color: $color-main;
+                    font-weight: $font-weight-semibold;
+                }
+            }
+        }
+        
+        &--model{
+            width: 66%;
+        }
+    }
+
+    &__form{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: $m-small 0;
+
+        &--input{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &--bouton{
+            margin: $m-litle auto;
+        }
+    }
+
+    &__bouton--supp{
+        width: fit-content;
+        margin: auto;
     }
 
     &__popup-supp{

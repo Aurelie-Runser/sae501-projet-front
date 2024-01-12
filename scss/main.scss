@@ -32,7 +32,8 @@ p{
     font-size: $font_size-small;
 }
 
-select{
+select,
+input[type="color"]{
     padding: 10px $m-small;
     background: lighten($color-main, 30%);
     border: $color-main 2px solid;
