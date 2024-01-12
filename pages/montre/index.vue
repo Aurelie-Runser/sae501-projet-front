@@ -4,44 +4,72 @@
 
         <myButton lien="/montre/creation">Créer ma montre de zéro</myButton>
 
-        <div>
-            <label for="boitier_forme">Forme du boitier</label>
-            <select class="les_montres--select" name="boitier_forme" id="boitier_forme" v-model="selectedForme">
-                <option value="">tous</option>
-                <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom">{{ b.nom }}</option>
-            </select>
+        <div class="les_montres__filtres">
+            <div class="les_montres__filtres--filtre">
+                <label for="boitier_forme">Forme du Boitier</label>
+                <select class="les_montres--select" name="boitier_forme" id="boitier_forme" v-model="selectedForme">
+                    <option value="">tous</option>
+                    <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom">{{ b.nom }}</option>
+                </select>
+            </div>
             
-            <label for="bracelet_texture">Texture du Bracelet</label>
-            <select class="les_montres--select" name="bracelet_texture" id="bracelet_texture" v-model="selectedBracelet">
-                <option value="">toutes</option>
-                <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom">{{ b.nom }}</option>
-            </select>
+            <div class="les_montres__filtres--filtre">
+                <label for="bracelet_texture">Texture du Bracelet</label>
+                <select class="les_montres--select" name="bracelet_texture" id="bracelet_texture" v-model="selectedBracelet">
+                    <option value="">toutes</option>
+                    <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom">{{ b.nom }}</option>
+                </select>
+            </div>
             
-            <label for="pierre">Nom de la Pierre</label>
-            <select class="les_montres--select" name="pierre" id="pierre" v-model="selectedPierre">
-                <option value="">toutes</option>
-                <option v-for="p in pierres" :key="p.id_pierre" :value="p.nom">{{ p.nom }}</option>
-            </select>
+            <div class="les_montres__filtres--filtre">
+                <label for="pierre">Pierre Précieuse</label>
+                <select class="les_montres--select" name="pierre" id="pierre" v-model="selectedPierre">
+                    <option value="">toutes</option>
+                    <option v-for="p in pierres" :key="p.id_pierre" :value="p.nom">{{ p.nom }}</option>
+                </select>
+            </div>
         </div>
 
-        <ul class="les_montres__liste">
-            <li v-for="m in listeMontre" class="les_montres__liste--item">
-                <myCard v-bind="m"/>
-            </li>
-        </ul>
+        <gridCard :valeurMontres="listeMontre"/>
 
-        <myButton @click="lessMontre()" v-if="montreMin">Moins de Montre</myButton>
-        <myButton @click="moreMontre()" v-if="montreTotal">Plus de Montre</myButton>
+        <div class="les_montres__pagination">
+            <myButton @click="lessMontre()" v-if="montreMin">Moins de Montres</myButton>
+            <myButton @click="moreMontre()" v-if="montreTotal">Plus de Montres</myButton>
+        </div>
     </main>
 </template>
 
 <style lang="scss">
 .les_montres{
     
-    &__liste{
+    &__filtres{
         display: flex;
         flex-wrap: wrap;
         justify-content: space-evenly;
+        gap: $m-litle;
+        margin: $m-medium 0;
+
+        &--filtre{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: $m-small;
+
+            label{
+                font-weight: $font_weight-medium;
+            }
+
+            select{
+                width: 100%;
+            }
+        }
+    }
+
+    &__pagination{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        margin: $m-medium 0;
     }
 }
 </style>
