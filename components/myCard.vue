@@ -1,6 +1,6 @@
 <template>
     <div class="my_card">
-        <ThreeSeen v-bind="valeur" />
+        <sceneMontre v-bind="valeur" />
 
         <div class="my_card__content">
             <p class="my_card__content--nom">{{ valeur.nom }}</p>

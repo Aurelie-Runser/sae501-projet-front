@@ -4,7 +4,7 @@
         
         <div class="crea_montre__rendu">
             <div class="crea_montre__rendu--model">
-                <ThreeSeen v-bind="montre"/>
+                <sceneMontre v-bind="montre"/>
             </div>
 
             <ul class="crea_montre__rendu--infos">
@@ -24,7 +24,7 @@
                 </li>
                 <li class="info">
                     Pierre (<span class="info__valeur">{{ montre.pierre_nom }}</span>) :
-                    <span class="info__prix">{{ montre.prix_montre }} €</span>
+                    <span class="info__prix">{{ montre.pierre_prix }} €</span>
                 </li>
                 <li class="info">
                     Prix total : <span class="info__prix">{{ montre.prix_montre }} €</span>
@@ -41,12 +41,12 @@
 
             <div class="crea_montre__form--input">
                 <label for="nom">Nom de la Montre</label>
-                <input class="crea_montre__form--input" type="text" name="nom" id="nom" v-model="montre.nom">
+                <input class="crea_montre__form--input" type="text" name="nom" id="nom" required v-model="montre.nom">
             </div>
 
             <div class="crea_montre__form--input">
                 <label for="dernier_modifieur">Pseudo du créateur</label>
-                <input class="crea_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montre.createur">
+                <input class="crea_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" required v-model="montre.createur">
             </div>
 
             <div class="crea_montre__form--input">
@@ -181,18 +181,18 @@ const getMontre = async () => {
     montre.value = {
         nom : "",
         createur : user.value.pseudo,
-        boitier_texture : "black01",
-        boitier_texture_prix  : 1.99,
-        boitier_forme : "boitier_carre",
-        boitier_forme_prix : 1.99,
-        bracelet_texture : "tissus-marron",
-        bracelet_texture_prix  : 1.99,
-        pierre_nom : "rubis",
-        pierre_couleur : "#ff0000",
+        boitier_texture : boitier_texture.value[0].nom,
+        boitier_texture_prix  : boitier_texture.value[0].prix,
+        boitier_forme : boitier_forme.value[0].nom,
+        boitier_forme_prix : boitier_forme.value[0].prix,
+        bracelet_texture : bracelet_texture.value[0].nom,
+        bracelet_texture_prix : bracelet_texture.value[0].prix,
+        pierre_nom : pierre.value[0].nom,
+        pierre_couleur : pierre.value[0].couleur,
+        pierre_prix : pierre.value[0].prix,
         main_color : "#999999",
-        fond_nom : "bois",
-        pierre_prix : 100,
-        prix_montre : 106.97,
+        fond_nom : fond.value[0].nom,
+        prix_montre : boitier_texture.value[0].prix + boitier_forme.value[0].prix + bracelet_texture.value[0].prix + pierre.value[0].prix,
     }
     console.log(user.value.pseudo)
     console.log(user.value)
