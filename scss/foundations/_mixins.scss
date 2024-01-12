@@ -27,3 +27,20 @@
         @content;
     }
 }
+
+@mixin my_button{
+    display: block;
+    width: fit-content;
+    background: $color-main;
+    border: none;
+    border-radius: 5px;
+    padding: $m-small $m-medium;
+    font-size: $font_size-small;
+    font-weight: $font_weight-semibold;
+    color: $color-white;
+    cursor: pointer;
+
+    &:hover{
+        background: darken($color-main, 10%);
+    }
+}

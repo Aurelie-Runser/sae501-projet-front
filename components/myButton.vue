@@ -12,18 +12,7 @@
 
 <style lang="scss">
 .my_button{
-    display: block;
-    width: fit-content;
-    background: $color-main;
-    border-radius: 5px;
-    padding: $m-small $m-medium;
-    font-weight: $font_weight-semibold;
-    color: $color-white;
-    cursor: pointer;
-    
-    &:hover{
-        background: darken($color-main, 10%);
-    }
+    @include my_button;
     
     &.-black{
         background: $color-black;
