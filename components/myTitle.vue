@@ -9,7 +9,7 @@
     border: 2px solid transparent;
     background: url("/img/montre.jpg");
     margin: -100px;
-    margin-bottom: $m-big;
+    margin-bottom: $m-medium;
     background-position: 50% 25%;
 
     &__texte{
