@@ -11,10 +11,6 @@ main{
     padding: $m-big;
 }
 
-section{
-    margin: $m-big 0;
-}
-
 div {
     font-family: $font;
 }
@@ -32,6 +28,31 @@ h2{
     margin: $m-medium 0;
 }
 
+p{
+    font-size: $font_size-small;
+}
+
 select{
     border: red solid 2px;
+}
+
+input[type="text"],
+input[type="password"]{
+    padding: 10px $m-small;
+    border: lighten($color-black, 50%) solid 1.5px;
+    border-radius: 5px;
+    font-size: $font_size-small;
+
+    &:hover{
+        border-color: darken($color-main, 10%);
+    }
+
+    &:focus{
+        border-color: transparent;
+        outline: darken($color-main, 10%) solid 2px;
+    }
+}
+
+input[type="submit"]{
+    @include my_button;
 }
