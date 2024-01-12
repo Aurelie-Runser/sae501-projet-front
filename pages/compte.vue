@@ -6,6 +6,8 @@
             <h2>Mes Montres</h2>
             <gridCard :valeurMontres="mesMontres"/>
             <p v-if="mesMontres.length == 0" class="compte__section--texte">Vous n'avez créé aucune montre.</p>
+
+            <myButton class="compte__bouton" lien="/montre/creation">Créer une montre</myButton>
         </section>
 
         <hr class="compte__deco"/>
