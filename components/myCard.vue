@@ -17,7 +17,7 @@
 <style lang="scss">
 .my_card{
     width: 400px;
-    border-radius: 10px;
+    border-radius: 20px;
     box-shadow: 0 5px 10px rgba($color-black, 10%);
     overflow: hidden;
 
