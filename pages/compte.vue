@@ -16,6 +16,18 @@
             <h2>Mon Panier</h2>
             <gridCard :valeurMontres="monPanier"/>
             <p v-if="monPanier.length == 0" class="compte__section--texte">Votre panier est vide.</p>
+            
+            <myButton v-if="monPanier.length != 0" class="compte__bouton" @click="suppPanier = 'acheter'">Acheter mon panier</myButton>
+            <myButton v-if="monPanier.length != 0" color="black" class="compte__bouton"  @click="suppPanier = 'vider'">Vider mon panier</myButton>
+
+            <div v-if="suppPanier.length != 0" class="compte__popup compte__popup--acheter">
+                <p v-if="suppPanier == 'acheter'">Votre commande a été passée avec succès.</p>
+                <p v-if="suppPanier == 'acheter'">Merci de votre commande !</p>
+
+                <p v-if="suppPanier == 'vider'">Votre panier a été vidé avec succès.</p>
+
+                <myButton @click="videPanier()">Ok</myButton>
+            </div>
         </section>
 
         <hr class="compte__deco"/>
@@ -52,6 +64,28 @@
         margin: auto;
         margin-top: $m-big;
     }
+
+    &__popup{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 700px;
+        height: 300px;
+        padding: $m-medium;
+        background: $color-white;
+        border: 2px solid $color-main;
+        border-radius: 10px;
+
+        p{
+            font-size: $font_size-litle;
+            font-weight: $font_weight-medium;
+        }
+    }
 }
 </style>
   
@@ -62,6 +96,7 @@ const router = useRouter()
 
 const mesMontres = ref([])
 const monPanier = ref([])
+const suppPanier = ref("")
 
 const store = useGlobalStore()
 
@@ -81,6 +116,18 @@ const getPanier = async () => {
 const deconnexion = async () => {
     store.clearToken() // Enregistrer le token dans le store Pinia
     router.push('/login')
+}
+
+// vider le panier
+const videPanier = async () => {
+    try {
+        await API.delete(`/user/panier/supp/${store.token}`);
+        await getPanier()
+        suppPanier.value = ""
+    } catch (error) {
+        console.error("Erreur lors de la suppression du panier :", error.message)
+        message.value = "Erreur lors de la suppression du panier."
+    }
 }
 
 onMounted(async () => {
