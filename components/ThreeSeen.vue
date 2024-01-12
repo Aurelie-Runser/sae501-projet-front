@@ -114,13 +114,17 @@ function onLoaded(collada) {
     const textureLoaderBoitier = new TextureLoader();
     const textureBoitier = textureLoaderBoitier.load(`/images/background_${proprietes.boitier_texture.value}.png`);
     
-    boitierForme.material = new THREE.MeshBasicMaterial({
+    boitierForme.material[0] = new THREE.MeshBasicMaterial({
+        color: proprietes.main_color.value,
+    });
+
+    boitierForme.material[1] = new THREE.MeshBasicMaterial({
         map: textureBoitier,
     });
   
     iBouton = objects.getObjectByName("bouton");
     iBouton.material = new THREE.MeshBasicMaterial({
-        color: proprietes.main_color.value,
+        color: "#000",
     });
   
     iPierre = objects.getObjectByName("pierre");
