@@ -4,7 +4,7 @@
 
         <div class="fiche_montre__rendu">
             <div class="fiche_montre__rendu--model">
-                <ThreeSeen v-bind="montrePreview"/>
+                <sceneMontre v-bind="montrePreview"/>
             </div>
 
             <ul class="fiche_montre__rendu--infos">
@@ -23,7 +23,7 @@
                 </li>
                 <li class="info">
                     Pierre (<span class="info__valeur">{{ montrePreview.pierre_nom }}</span>) :
-                    <span class="info__prix">{{ montrePreview.prix_montre }} €</span>
+                    <span class="info__prix">{{ montrePreview.pierre_prix }} €</span>
                 </li>
                 <li class="info">
                     Prix total : <span class="info__prix">{{ montrePreview.prix_montre }} €</span>
@@ -38,9 +38,7 @@
             </ul>
         </div>
 
-
-        <form v-if="store.token" @submit.prevent="modifierMontre" method="put" class="fiche_montre__form">
-
+        <form v-if="store.token" @submit.prevent="modifierMontre" class="fiche_montre__form">
             <div class="fiche_montre__form--input">
                 <label for="nom">Nom de la Montre</label>
                 <input class="fiche_montre__form--input" type="text" name="nom" id="nom" v-model="montrePreview.nom">
@@ -91,8 +89,8 @@
                 </select>
             </div>
 
-            <input class="fiche_montre__form--bouton" type="submit" value="Enregistrer les Modifications"/>
-
+            <input v-if="memeUser" class="fiche_montre__form--bouton" type="submit" value="Enregistrer les Modifications"/>
+            <input v-else class="fiche_montre__form--bouton" type="submit" value="Créer une copie à mon nom"/>
         </form>
 
         <myButton v-if="store.token" class="fiche_montre__bouton--supp" color="black" @click="supp = true">Supprimer</myButton>
@@ -224,6 +222,11 @@ const bracelet_texture = ref([])
 const pierre = ref([])
 const fond = ref([])
 
+const users = ref([])
+const user = ref([])
+const actuelUser = ref([])
+const memeUser = ref(false)
+
 const message = ref("")
 const supp = ref(false)
 
@@ -259,6 +262,15 @@ const getFond = async () => {
     fond.value = response.data
 }
 
+const getUser = async () => {
+    const response = await API.get(`/user`)
+    users.value = response.data
+    user.value = users.value.find(u => u.pseudo === montre.value.createur)
+    actuelUser.value = users.value.find(u => u.id_user === store.token)
+    console.log("token", store.token, "user", user.value.id_user)
+    memeUser.value = store.token == user.value.id_user ? true : false
+}
+
 // modification des prix en fonction des noms de chaque élément
 const updatePrice = async () => {
     const BoitierTextureSelect = boitier_texture.value.find(bot => bot.nom === montre.value.boitier_texture )
@@ -277,8 +289,20 @@ const updatePrice = async () => {
 // enregistrement de la montre modifiée dans la base de données
 const modifierMontre = async () => {
     try {
-        await API.put(`/montre/${route.params.id}/modif`, montrePreview.value);
-        message.value = "Montre modifiée avec succès."
+        if (memeUser.value){
+            await API.put(`/montre/${route.params.id}/modif`, montrePreview.value);
+            message.value = "Montre modifiée avec succès."
+        } else {
+            montre.value.createur = actuelUser.value.pseudo
+            const reponse = await API.post(`/montre/add`, montre.value);
+            
+            if (reponse.data.message != "Cette montre existe déjà pour cet user"){
+                message.value = "Montre créée avec succès."
+                router.push(`/montre/${reponse.data.id_montre}`)
+            } else {
+                message.value = "Vous avez déjà copié cette montre !"
+            }
+        }
     } catch (error) {
         console.error("Erreur lors de la modification de la montre :", error.message)
         message.value = "Erreur lors de la modification de la montre."
@@ -354,6 +378,7 @@ onMounted(async () => {
     await getBracelet_Texture()
     await getPierre()
     await getFond()
+    await getUser()
     await getPanier()
 })
 </script>
