@@ -38,7 +38,7 @@
             </ul>
         </div>
 
-        <form v-if="store.token" @submit.prevent="modifierMontre" class="fiche_montre__form">
+        <form v-if="store.token && memeUser" @submit.prevent="modifierMontre" class="fiche_montre__form">
             <div class="fiche_montre__form--input">
                 <label for="nom">Nom de la Montre</label>
                 <input class="fiche_montre__form--input" type="text" name="nom" id="nom" v-model="montrePreview.nom">
@@ -89,11 +89,13 @@
                 </select>
             </div>
 
-            <input v-if="memeUser" class="fiche_montre__form--bouton" type="submit" value="Enregistrer les Modifications"/>
-            <input v-else class="fiche_montre__form--bouton" type="submit" value="Créer une copie à mon nom"/>
+            <div class="fiche_montre__form--boutons">
+                <input v-if="memeUser" class="bouton" type="submit" value="Enregistrer les Modifications"/>
+                <myButton v-if="store.token" class="bouton" color="black" @click="supp = true">Supprimer</myButton>
+            </div>
         </form>
-
-        <myButton v-if="store.token" class="fiche_montre__bouton--supp" color="black" @click="supp = true">Supprimer</myButton>
+        
+        <myButton v-if="!memeUser" class="fiche_montre__bouton" @click="modifierMontre()">Créer une copie à mon nom</myButton>
 
         <div v-if="!store.token" class="fiche_montre__login">
             <p>Pour modifier cette montre où l'ajouter à votre panier, veuillez vous connecter ou vous inscrire.</p>
@@ -103,6 +105,7 @@
 
         <div v-if="supp" class="fiche_montre__popup-supp">
             <p>Vous êtes sur de vouloir supprimer cette montre ? Cette action est irréversible.</p>
+            <p>Cette montre disparaitra de votre panier et de ceux des autres utilisateurs.</p>
 
             <myButton @click="supp = false">Non, je la laisse</myButton>
             <myButton color="black" @click="supprimerMontre">Oui, je veux la supprimer</myButton>
@@ -172,12 +175,18 @@
             gap: 10px;
         }
 
-        &--bouton{
-            margin: $m-litle auto;
+        &--boutons{
+            width: 100%;
+
+            .bouton{
+                width: fit-content;
+                margin: $m-litle auto;
+            }
+            
         }
     }
 
-    &__bouton--supp{
+    &__bouton{
         width: fit-content;
         margin: $m-litle auto;
     }
@@ -312,7 +321,7 @@ const modifierMontre = async () => {
 // suppression de la montre dans la base de données
 const supprimerMontre = async () => {
     try {
-        await API.delete(`/montre/${route.params.id}/supp`);
+        await API.delete(`/montre/${route.params.id}/supp/${store.token}`);
         message.value = "Montre supprimée avec succès.";
         router.push('/montre')
     } catch (error) {
