@@ -48,7 +48,7 @@
             
             <div class="fiche_montre__form--input">
                 <label for="dernier_modifieur">Pseudo du créateur</label>
-                <input class="fiche_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montrePreview.dernier_modifieur">
+                <input class="fiche_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montrePreview.createur">
             </div>
             
             <div class="fiche_montre__form--input">

@@ -5,7 +5,7 @@
         <div class="my_card__content">
             <p class="my_card__content--nom">{{ valeur.nom }}</p>
             <div class="my_card__content--infos">
-                <p class="user">{{ valeur.dernier_modifieur }}</p>
+                <p class="user">{{ valeur.createur }}</p>
                 <p class="prix">{{ valeur.prix_montre }} €</p>
             </div>
     

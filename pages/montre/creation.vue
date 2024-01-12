@@ -46,7 +46,7 @@
 
             <div class="crea_montre__form--input">
                 <label for="dernier_modifieur">Pseudo du créateur</label>
-                <input class="crea_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montre.dernier_modifieur">
+                <input class="crea_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montre.createur">
             </div>
 
             <div class="crea_montre__form--input">
@@ -163,10 +163,24 @@
 <script setup>
 import { API } from '@/utils/axios.js'
 
+const store = useGlobalStore()
+
 const router = useRouter()
-const montre = ref({
+
+const boitier_texture = ref([])
+const boitier_forme = ref([])
+const bracelet_texture = ref([])
+const pierre = ref([])
+const fond = ref([])
+const user = ref([])
+
+const message = ref("")
+const montre = ref({})
+
+const getMontre = async () => {
+    montre.value = {
         nom : "",
-        dernier_modifieur : "Aurélie",
+        createur : user.value.pseudo,
         boitier_texture : "black01",
         boitier_texture_prix  : 1.99,
         boitier_forme : "boitier_carre",
@@ -179,15 +193,11 @@ const montre = ref({
         fond_nom : "bois",
         pierre_prix : 100,
         prix_montre : 106.97,
-})
+    }
+    console.log(user.value.pseudo)
+    console.log(user.value)
 
-const boitier_texture = ref([])
-const boitier_forme = ref([])
-const bracelet_texture = ref([])
-const pierre = ref([])
-const fond = ref([])
-
-const message = ref("")
+}
 
 const getBoitier_Texture = async () => {
     const response = await API.get(`/boitier_texure`)
@@ -212,6 +222,11 @@ const getPierre = async () => {
 const getFond = async () => {
     const response = await API.get(`/fond`)
     fond.value = response.data
+}
+
+const getUser = async () => {
+    const response = await API.get(`/user`)
+    user.value = response.data.find(u => u.id_user === store.token)
 }
 
 // modification des prix en fonction des noms de chaque élément
@@ -247,6 +262,8 @@ onMounted(async () => {
     await getBracelet_Texture()
     await getPierre()
     await getFond()
+    await getUser()
+    await getMontre()
 })
 
 definePageMeta({
