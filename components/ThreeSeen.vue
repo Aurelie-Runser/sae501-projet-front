@@ -128,9 +128,15 @@ function onLoaded(collada) {
     });
   
     iPierre = objects.getObjectByName("pierre");
+    
     iPierre.material = new THREE.MeshBasicMaterial({
         color: proprietes.pierre_couleur.value,
     });
+    
+    if (proprietes.pierre_couleur.value == "#00000000"){
+        iPierre.material.opacity =  0,
+        iPierre.material.transparent = true
+    };
   
     let iPierre2 = iPierre.clone();
     iPierre2.position.y -= 38;
