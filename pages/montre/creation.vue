@@ -1,50 +1,164 @@
 <template>
-    <main>
+    <main class="crea_montre">
         <myTitle>Création d'une montre</myTitle>
+        
+        <div class="crea_montre__rendu">
+            <div class="crea_montre__rendu--model">
+                <ThreeSeen v-bind="montre"/>
+            </div>
 
-        <ThreeSeen v-bind="montre"/>
+            <ul class="crea_montre__rendu--infos">
+                <li class="info info__nom">{{ montre.nom }}</li>
 
-        <ul>
-            <li v-for="(m, key) in montre" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
-        </ul>
+                <li class="info">
+                    Bracelet Texture (<span class="info__valeur">{{ montre.bracelet_texture }}</span>) :
+                    <span class="info__prix">{{ montre.bracelet_texture_prix }} €</span>
+                </li>
+                <li class="info">
+                    Boitier Texture (<span class="info__valeur">{{ montre.boitier_texture }}</span>) :
+                    <span class="info__prix">{{ montre.boitier_texture_prix }} €</span>
+                </li>
+                <li class="info">
+                    Boitier Forme (<span class="info__valeur">{{ montre.boitier_forme }}</span>) :
+                    <span class="info__prix">{{ montre.boitier_forme_prix }} €</span>
+                </li>
+                <li class="info">
+                    Pierre (<span class="info__valeur">{{ montre.pierre_nom }}</span>) :
+                    <span class="info__prix">{{ montre.prix_montre }} €</span>
+                </li>
+                <li class="info">
+                    Prix total : <span class="info__prix">{{ montre.prix_montre }} €</span>
+                </li>
 
-        <hr/>
+                <li class="info info__message">
+                    <p v-if="message">{{ message }}</p>
+                    <p v-else>(Enregistrez cette montre pour pouvoir l'ajouter à votre panier)</p>
+                </li>
+            </ul>
+        </div>
 
-        <form @submit.prevent="creerMontre" method="post" class="fiche_montre__form">
+        <form @submit.prevent="creerMontre" method="post" class="crea_montre__form">
 
-            <input class="fiche_montre__form--input" type="text" name="nom" id="nom" v-model="montre.nom">
+            <div class="crea_montre__form--input">
+                <label for="nom">Nom de la Montre</label>
+                <input class="crea_montre__form--input" type="text" name="nom" id="nom" v-model="montre.nom">
+            </div>
 
-            <input class="fiche_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montre.dernier_modifieur">
+            <div class="crea_montre__form--input">
+                <label for="dernier_modifieur">Pseudo du créateur</label>
+                <input class="crea_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montre.dernier_modifieur">
+            </div>
 
-            <select class="fiche_montre__form--select" name="boitier_texture" id="boitier_texture" v-model="montre.boitier_texture">
-                <option v-for="b in boitier_texture" :key="b.id_boitier_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
-            </select>
+            <div class="crea_montre__form--input">
+                <label for="boitier_texture">Texture du Boitier</label>
+                <select class="crea_montre__form--select" name="boitier_texture" id="boitier_texture" v-model="montre.boitier_texture">
+                    <option v-for="b in boitier_texture" :key="b.id_boitier_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
+                </select>
+            </div>
 
-            <select class="fiche_montre__form--select" name="boitier_forme" id="boitier_forme" v-model="montre.boitier_forme">
-                <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
-            </select>
+            <div class="crea_montre__form--input">
+                <label for="boitier_forme">Forme du Boitier</label>
+                <select class="crea_montre__form--select" name="boitier_forme" id="boitier_forme" v-model="montre.boitier_forme">
+                    <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
+                </select>
+            </div>
 
-            <select class="fiche_montre__form--select" name="bracelet_texture" id="bracelet_texture" v-model="montre.bracelet_texture">
-                <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
-            </select>
+            <div class="crea_montre__form--input">
+                <label for="bracelet_texture">Texture du Bracelet</label>
+                <select class="crea_montre__form--select" name="bracelet_texture" id="bracelet_texture" v-model="montre.bracelet_texture">
+                    <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
+                </select>
+            </div>
 
-            <select class="fiche_montre__form--select" name="pierre" id="pierre" v-model="montre.pierre_couleur">
-                <option v-for="p in pierre" :key="p.id_pierre" :value="p.couleur" @click="updatePrice">{{ p.nom }}</option>
-            </select>
+            <div class="crea_montre__form--input">
+                <label for="pierre">Pierre Préciseuse</label>
+                <select class="crea_montre__form--select" name="pierre" id="pierre" v-model="montre.pierre_couleur">
+                    <option v-for="p in pierre" :key="p.id_pierre" :value="p.couleur" @click="updatePrice">{{ p.nom }}</option>
+                </select>
+            </div>
 
-            <input type="color" name="color" id="color" v-model="montre.main_color">
+            <div class="crea_montre__form--input">
+                <label for="main_color">Couleur</label>
+                <input type="color" name="main_color" id="main_color" v-model="montre.main_color">
+            </div>
 
-            <select class="fiche_montre__form--select" name="fond_nom" id="fond_nom" v-model="montre.fond_nom">
-                <option v-for="f in fond" :key="f.id_fond" :value="f.nom">{{ f.nom }}</option>
-            </select>
+            <div class="crea_montre__form--input">
+                <label for="fond_nom">Fond</label>
+                <select class="crea_montre__form--select" name="fond_nom" id="fond_nom" v-model="montre.fond_nom">
+                    <option v-for="f in fond" :key="f.id_fond" :value="f.nom">{{ f.nom }}</option>
+                </select>
+            </div>
 
-            <button type="submit">
-                <MyButton>Enregistrer la Montre</MyButton>
-            </button>
+            <input class="crea_montre__form--bouton" type="submit" value="Enregistrer cette Montre"/>
 
         </form>
     </main>
 </template>
+
+<style lang="scss">
+.crea_montre{
+
+    &__rendu{
+        display: flex;
+        gap: $m-litle;
+
+        &--infos{
+            display: flex;
+            flex-direction: column;
+            gap: $m-small;
+            margin: auto;
+           
+            
+            .info{
+
+                &__nom{
+                    font-size: $font-size-regular;
+                    font-weight: $font_weight-bold;
+                    margin-bottom: $m-small;
+                }
+
+                &__valeur{
+                    font-weight: $font-weight-medium;
+                }
+
+                &__prix{
+                    color: $color-main;
+                    font-weight: $font-weight-semibold;
+                }
+
+                &__message{
+                    max-width: 80%;
+                    margin: $m-small auto;
+                    font-weight: $font_weight-bold;
+                    color: $color-main;
+                    text-align: center;
+                }
+            }
+        }
+        
+        &--model{
+            width: 66%;
+        }
+    }
+
+    &__form{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: $m-litle 0;
+
+        &--input{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &--bouton{
+            margin: $m-litle auto;
+        }
+    }
+}
+</style>
 
 <script setup>
 import { API } from '@/utils/axios.js'
@@ -59,6 +173,7 @@ const montre = ref({
         boitier_forme_prix : 1.99,
         bracelet_texture : "tissus-marron",
         bracelet_texture_prix  : 1.99,
+        pierre_nom : "rubis",
         pierre_couleur : "#ff0000",
         main_color : "#999999",
         fond_nom : "bois",

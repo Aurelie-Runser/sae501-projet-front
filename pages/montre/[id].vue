@@ -1,6 +1,6 @@
 <template>
     <main class="fiche_montre">
-        <myTitle>{{ montrePreview.nom }}</myTitle>
+        <myTitle>Modification de la Montre</myTitle>
 
         <div class="fiche_montre__rendu">
             <div class="fiche_montre__rendu--model">
@@ -8,6 +8,7 @@
             </div>
 
             <ul class="fiche_montre__rendu--infos">
+                <li class="info info__nom">{{ montrePreview.nom }}</li>
                 <li class="info">
                     Bracelet Texture (<span class="info__valeur">{{ montrePreview.bracelet_texture }}</span>) :
                     <span class="info__prix">{{ montrePreview.bracelet_texture_prix }} €</span>
@@ -28,10 +29,12 @@
                     Prix total : <span class="info__prix">{{ montrePreview.prix_montre }} €</span>
                 </li>
                 
-                <li><myButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</myButton></li>
-                <li> <myButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</myButton></li>
+                <li class="info info__bouton">
+                    <myButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</myButton>
+                    <myButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</myButton>
+                </li>
 
-                <li>{{ message }}</li>
+                <li class="info info__message">{{ message }}</li>
             </ul>
         </div>
 
@@ -109,10 +112,12 @@
 
     &__rendu{
         display: flex;
+        gap: $m-litle;
 
         &--infos{
             display: flex;
             flex-direction: column;
+            justify-content: center;
             gap: $m-small;
             margin: auto;
            
@@ -127,6 +132,22 @@
                     color: $color-main;
                     font-weight: $font-weight-semibold;
                 }
+
+                &__nom{
+                    font-size: $font-size-regular;
+                    font-weight: $font_weight-bold;
+                    margin-bottom: $m-small;
+                }
+
+                &__bouton{
+                    margin: $m-small 0;
+                }
+
+                &__message{
+                    margin: auto;
+                    font-weight: $font_weight-bold;
+                    color: $color-main;
+                }
             }
         }
         
@@ -139,7 +160,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        margin: $m-small 0;
+        margin: $m-litle 0;
 
         &--input{
             display: flex;
@@ -246,10 +267,10 @@ const updatePrice = async () => {
 const modifierMontre = async () => {
     try {
         await API.put(`/montre/${route.params.id}/modif`, montrePreview.value);
-        message.value = "Montre modifiée avec succès"
+        message.value = "Montre modifiée avec succès."
     } catch (error) {
         console.error("Erreur lors de la modification de la montre :", error.message)
-        message.value = "Erreur lors de la modification de la montre"
+        message.value = "Erreur lors de la modification de la montre."
     }
 }
 
@@ -257,11 +278,11 @@ const modifierMontre = async () => {
 const supprimerMontre = async () => {
     try {
         await API.delete(`/montre/${route.params.id}/supp`);
-        message.value = "Montre supprimée avec succès";
+        message.value = "Montre supprimée avec succès.";
         router.push('/montre')
     } catch (error) {
         console.error("Erreur lors de la suppression de la montre :", error.message)
-        message.value = "Erreur lors de la suppression de la montre"
+        message.value = "Erreur lors de la suppression de la montre."
     }
 }
 
@@ -290,12 +311,12 @@ const ajouterPanier = async () => {
 
     try {
         await API.post(`/user/panier/add`, newPanier.value);
-        message.value = "Montre mis dans le panier"
+        message.value = "Montre mis dans le panier avec succès."
         // rappelle de la fonction pour mettre à jour le bouton
         getPanier()
     } catch (error) {
         console.error("Erreur lors de la mise dans le panier :", error.message)
-        message.value = "Erreur lors de la mise dans le panier"
+        message.value = "Erreur lors de la mise dans le panier."
     }
 }
 
@@ -306,12 +327,12 @@ const supprimerPanier = async () => {
 
     try {
         await API.delete(`/user/panier/supp/${newPanier.value.id_user}/${newPanier.value.id_montre}`);
-        message.value = "Montre retiré du panier"
+        message.value = "Montre retiré du panier avec succès."
         // rappelle de la fonction pour mettre à jour le bouton
         getPanier()
     } catch (error) {
         console.error("Erreur lors de la supprimession du panier :", error.message)
-        message.value = "Erreur lors de la supprimession du panier"
+        message.value = "Erreur lors de la supprimession du panier."
     }
 }
 
