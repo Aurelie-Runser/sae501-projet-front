@@ -1,42 +1,61 @@
 <template>
     <div class="my_card">
-        <ThreeSeen :boitier_texture="boitier_texture" :boitier_forme="boitier_forme" :bracelet_texture="bracelet_texture" :pierre_couleur="pierre_couleur" :main_color="main_color" :fond_nom="fond_nom" />
+        <ThreeSeen v-bind="valeur" />
 
-        <p>nom : {{ nom }}</p>
-        <br/>
-        <p>dernier_modifieur : {{ dernier_modifieur }}</p>
-        <br/>
-        <p>boitier_texture : {{ boitier_texture }}</p>
-        <br/>
-        <p>boitier_forme : {{ boitier_forme }}</p>
-        <br/>
-        <p>bracelet_texture : {{ bracelet_texture }}</p>
-        <br/>
-        <p>pierre_nom : {{ pierre_nom }}</p>
-        <br/>
-        <p>pierre_couleur : {{ pierre_couleur }}</p>
-        <br/>
-        <p>main_color : {{ main_color }}</p>
-        <br/>
-        <p>fond_nom : {{ fond_nom }}</p>
-        <br/>
-        <p>prix_montre : {{ prix_montre }} €</p>
-
-        <myButton :lien="`/montre/${id_montre}`">Voir</myButton>
-
+        <div class="my_card__content">
+            <p class="my_card__content--nom">{{ valeur.nom }}</p>
+            <div class="my_card__content--infos">
+                <p class="user">{{ valeur.dernier_modifieur }}</p>
+                <p class="prix">{{ valeur.prix_montre }} €</p>
+            </div>
+    
+            <myButton class="my_card__content--bouton" :lien="`/montre/${valeur.id_montre}`">Voir</myButton>
+        </div>
     </div>
-
 </template>
 
 <style lang="scss">
 .my_card{
-    border: 2px solid red;
-    width: 500px;
-    padding: $m-small;
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba($color-black, 10%);
+    overflow: hidden;
 
-    p{
-        width: fit-content;
-        height: fit-content;
+    &__content{
+        margin: $m-litle;
+
+        &--nom{
+            font-size: $font-size-litle;
+            font-weight: $font-weight-bold;   
+        }
+
+        &--infos{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: $m-small;
+            margin: $m-litle 0;
+
+            p{
+                padding: 10px;
+                border-radius: 10px;
+                background: rgba($color-main, 10%);
+            }
+ 
+            .user{
+                color: $color-main;
+            }
+ 
+            .prix{
+                font-weight: $font_weight-medium;
+            }
+        }
+
+        &--bouton{
+            width: fit-content;
+            margin: auto;
+        }
     }
 }
 </style>
@@ -45,17 +64,7 @@
 import myButton from "@/components/myButton.vue"
 
 defineProps({
-  id_montre: Number,
-  nom: String,
-  dernier_modifieur: String,
-  boitier_texture: String,
-  boitier_forme : String,
-  bracelet_texture : String,
-  pierre_nom : String,
-  pierre_couleur : String,
-  main_color : String,
-  fond_nom : String,
-  prix_montre: Number,
+  valeur: Object,
 })
 
 </script>
