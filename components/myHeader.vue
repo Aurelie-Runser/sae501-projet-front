@@ -40,6 +40,7 @@
     &__item{
         font-size: $font_size-small+0.25rem;
         font-weight: $font_weight-semibold;
+        transition: all .2s ease-in-out;
 
         &:hover{
             color: darken($color-main, 10%);

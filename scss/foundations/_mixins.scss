@@ -39,6 +39,7 @@
     font-weight: $font_weight-semibold;
     color: $color-white;
     cursor: pointer;
+    transition: all .25s ease-in-out;
 
     &:hover{
         background: darken($color-main, 10%);
