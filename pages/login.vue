@@ -78,7 +78,7 @@
         height: fit-content;
         margin-top: $m-litle;
         text-align: center;
-        font-size: $font-size-regular;
+        font-size: $font-size-litle;
     }   
 }
 </style>

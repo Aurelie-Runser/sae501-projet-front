@@ -1,24 +1,57 @@
 <template>
-    <main>
+    <main class="compte">
         <myTitle>Mon Compte</myTitle>
 
-        <h2>Mes Montres</h2>
-        <ul>
-            <li v-for="m in mesMontres">
-                <myCard v-bind="m"/>
-            </li>
-        </ul>
+        <section class="compte__section">
+            <h2>Mes Montres</h2>
+            <gridCard :valeurMontres="mesMontres"/>
+            <p v-if="mesMontres.length == 0" class="compte__section--texte">Vous n'avez créé aucune montre.</p>
+        </section>
 
-        <h2>Mon Panier</h2>
-        <ul>
-            <li v-for="p in panier">
-                <myCard v-bind="p"/>
-            </li>
-        </ul>
+        <hr class="compte__deco"/>
+        
+        <section class="compte__section">
+            <h2>Mon Panier</h2>
+            <gridCard :valeurMontres="monPanier"/>
+            <p v-if="monPanier.length == 0" class="compte__section--texte">Votre panier est vide.</p>
+        </section>
 
-        <myButton @click="deconnexion" color="black">Je me déconnecte</myButton>
+        <hr class="compte__deco"/>
+
+        <myButton class="compte__bouton" @click="deconnexion" color="black">Je me déconnecte</myButton>
     </main>
 </template>
+
+<style lang="scss">
+.compte{
+
+    &__section{
+        margin: $m-big 0;
+
+        &--texte{
+            margin: $m-medium auto;
+            text-align: center;
+            font-size: $font_size-litle;
+        }
+    }
+
+    &__deco{
+        display: block;
+        flex: none;
+        width: 100%;
+        height: 2px;
+        border: none;
+        border-radius: 100%;
+        background: $color-main;
+    }
+
+    &__bouton{
+        width: fit-content;
+        margin: auto;
+        margin-top: $m-big;
+    }
+}
+</style>
   
 <script setup>
 import { API } from '@/utils/axios.js'
@@ -26,7 +59,7 @@ import { API } from '@/utils/axios.js'
 const router = useRouter()
 
 const mesMontres = ref([])
-const panier = ref([])
+const monPanier = ref([])
 
 const store = useGlobalStore()
 
@@ -39,7 +72,7 @@ const getMontres = async () => {
 // récupérations des tables pour afficher la montre et tous les paramètres
 const getPanier = async () => {
     const response = await API.get(`/user/${store.token}/panier`)
-    panier.value = response.data
+    monPanier.value = response.data
 }
 
 // enregistrement de la montre modifiée dans la base de données
