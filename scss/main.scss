@@ -33,7 +33,15 @@ p{
 }
 
 select{
-    border: red solid 2px;
+    padding: 10px $m-small;
+    background: lighten($color-main, 30%);
+    border: $color-main 2px solid;
+    border-radius: 5px;
+
+    &:hover{
+        background: $color-main;
+        color: $color-white;
+    }
 }
 
 input[type="text"],
