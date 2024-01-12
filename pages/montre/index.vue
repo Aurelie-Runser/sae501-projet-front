@@ -2,7 +2,7 @@
     <main class="les_montres">
         <myTitle>Les Montres</myTitle>
 
-        <myButton lien="/montre/creation">Créer ma montre de zéro</myButton>
+        <myButton v-if="store.token" lien="/montre/creation">Créer ma montre de zéro</myButton>
 
         <div class="les_montres__filtres">
             <div class="les_montres__filtres--filtre">
@@ -76,6 +76,8 @@
   
 <script setup>
 import {API} from '@/utils/axios'
+
+const store = useGlobalStore()
 
 const montres = ref([])
 

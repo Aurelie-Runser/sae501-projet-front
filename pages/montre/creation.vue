@@ -249,4 +249,11 @@ onMounted(async () => {
     await getFond()
 })
 
+definePageMeta({
+  middleware: [
+    function (to, from) {
+    },
+    'auth',
+  ],
+});
 </script>

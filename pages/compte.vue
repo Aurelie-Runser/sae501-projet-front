@@ -87,4 +87,12 @@ onMounted(async () => {
     await getMontres()
     await getPanier()
 })
+
+definePageMeta({
+  middleware: [
+    function (to, from) {
+    },
+    'auth',
+  ],
+});
 </script>

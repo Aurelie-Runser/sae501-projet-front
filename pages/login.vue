@@ -85,7 +85,6 @@
   
 <script setup>
 import {API} from '@/utils/axios'
-import { useGlobalStore } from '@/stores/global'
 const store = useGlobalStore()
 
 const router = useRouter()

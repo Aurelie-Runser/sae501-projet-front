@@ -29,7 +29,7 @@
                     Prix total : <span class="info__prix">{{ montrePreview.prix_montre }} €</span>
                 </li>
                 
-                <li class="info info__bouton">
+                <li class="info info__bouton" v-if="store.token">
                     <myButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</myButton>
                     <myButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</myButton>
                 </li>
@@ -39,7 +39,7 @@
         </div>
 
 
-        <form @submit.prevent="modifierMontre" method="put" class="fiche_montre__form">
+        <form v-if="store.token" @submit.prevent="modifierMontre" method="put" class="fiche_montre__form">
 
             <div class="fiche_montre__form--input">
                 <label for="nom">Nom de la Montre</label>
@@ -95,7 +95,13 @@
 
         </form>
 
-        <myButton class="fiche_montre__bouton--supp" color="black" @click="supp = true">Supprimer</myButton>
+        <myButton v-if="store.token" class="fiche_montre__bouton--supp" color="black" @click="supp = true">Supprimer</myButton>
+
+        <div v-if="!store.token" class="fiche_montre__login">
+            <p>Pour modifier cette montre où l'ajouter à votre panier, veuillez vous connecter ou vous inscrire.</p>
+            <myButton class="fiche_montre__bouton--supp" lien="/login">Login</myButton>
+
+        </div>
 
         <div v-if="supp" class="fiche_montre__popup-supp">
             <p>Vous êtes sur de vouloir supprimer cette montre ? Cette action est irréversible.</p>
@@ -175,7 +181,12 @@
 
     &__bouton--supp{
         width: fit-content;
-        margin: auto;
+        margin: $m-litle auto;
+    }
+
+    &__login{
+        margin: $m-medium 0;
+        text-align: center;
     }
 
     &__popup-supp{
@@ -345,5 +356,4 @@ onMounted(async () => {
     await getFond()
     await getPanier()
 })
-
 </script>
