@@ -95,11 +95,11 @@
             </div>
         </form>
         
-        <myButton v-if="!memeUser" class="fiche_montre__bouton" @click="modifierMontre()">Créer une copie à mon nom</myButton>
+        <myButton v-if="store.token && !memeUser" class="fiche_montre__bouton" @click="modifierMontre()">Créer une copie à mon nom</myButton>
 
         <div v-if="!store.token" class="fiche_montre__login">
             <p>Pour modifier cette montre où l'ajouter à votre panier, veuillez vous connecter ou vous inscrire.</p>
-            <myButton class="fiche_montre__bouton--supp" lien="/login">Login</myButton>
+            <myButton class="fiche_montre__bouton" lien="/login">Login</myButton>
 
         </div>
 
