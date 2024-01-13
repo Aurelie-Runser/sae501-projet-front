@@ -133,7 +133,7 @@ function onLoaded(collada) {
         color: proprietes.pierre_couleur.value,
     });
     
-    if (proprietes.pierre_couleur.value == "#00000000"){
+    if (proprietes.pierre_couleur.value == "none"){
         iPierre.material.opacity =  0,
         iPierre.material.transparent = true
     };
