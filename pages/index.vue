@@ -16,7 +16,7 @@
 .accueil{
     height: 90vh;
     overflow: hidden;
-    background-image: url("@/img/montre.jpg");    
+    background-image: url("/img/montre.jpg");    
     background-position: top center;
 
     &__titre{
