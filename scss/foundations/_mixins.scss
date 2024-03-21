@@ -1,5 +1,5 @@
 @mixin small {
-    @media screen and (max-width: $sm) {
+    @media screen and (min-width: $sm) {
         @content;
     }
 }
@@ -38,6 +38,7 @@
     font-size: $font_size-small;
     font-weight: $font_weight-semibold;
     color: $color-white;
+    text-align: center;
     cursor: pointer;
     transition: all .25s ease-in-out;
 

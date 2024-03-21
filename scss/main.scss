@@ -8,7 +8,10 @@
 }
 
 main{
-    padding: $m-big;
+    padding: $m-small;
+    @include small{
+        padding: $m-big;
+    }
 }
 
 div {
@@ -20,6 +23,14 @@ h1{
     font-weight: $font_weight-bold;
     margin: $m-medium 0;
     text-align: center;
+
+    @include medium{
+       font-size: $font_size-big;
+    }
+
+    @include large{
+       font-size: 4rem;
+    }
 }
 
 h2{
