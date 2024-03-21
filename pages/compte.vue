@@ -38,6 +38,7 @@
 
 <style lang="scss">
 .compte{
+    margin-top: 5rem;
 
     &__section{
         margin: $m-big 0;
@@ -85,6 +86,10 @@
             font-size: $font_size-litle;
             font-weight: $font_weight-medium;
         }
+    }
+
+    @include small{
+        margin-top: 0;
     }
 }
 </style>

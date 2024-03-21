@@ -14,6 +14,7 @@
     
             </section>
 
+            <p class="login__error login__error--mobile" v-if="messageInscrit">{{ messageInscrit }}</p>
             <div class="login__deco"></div>
     
             <section class="login__connexion">
@@ -28,16 +29,19 @@
             </section>
         </div>
 
-        <p class="login__error">{{ message }}</p>
+        <p class="login__error login__error--pc" v-if="messageInscrit">{{ messageInscrit }}</p>
+        <p class="login__error" v-if="messageCo">{{ messageCo }}</p>
     </main>
 </template>
 
 <style lang="scss">
 .login{
-
+    margin-top: 5rem;
+    
     &__sections{
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
         justify-content: space-around;
         gap: $m-small;
         
@@ -60,25 +64,45 @@
     }
 
     &__deco{
-        display: none;
+        display: block;
+        flex: none;
+        width: 100%;
+        height: 2px;
+        border: none;
+        border-radius: 100%;
+        background: $color-main;
+    }
+
+    @include small{
+        margin-top: 0;
     }
 
     @include xlarge{
         &__deco{
-            display: block;
-            flex: none;
             width: 2px;
-            border: none;
-            border-radius: 100%;
-            background: $color-main;
+            height: 400px;
         }
     }
 
     &__error{
         height: fit-content;
-        margin-top: $m-litle;
+        margin: $m-litle auto;
         text-align: center;
         font-size: $font-size-litle;
+
+        &--mobile{
+            @include large{
+                display: none;
+            }
+        }
+
+        &--pc{
+            display: none;
+
+            @include large{
+                display: block;
+            }
+        }
     }   
 }
 </style>
@@ -89,30 +113,33 @@ const store = useGlobalStore()
 
 const router = useRouter()
 const userNew = ref({})
+const messageInscrit = ref("")
 const userCo = ref({})
-const message = ref("")
+const messageCo = ref("")
 
 const inscription = async () => {
+    messageCo.value = ""
     try {
         await API.post(`/user/add`, userNew.value);
-        message.value = "Votre inscription a réussi. Bienvenue. Connectez-vous pour pouvoir créer vos montres et gérer votre panier."
+        messageInscrit.value = "Votre inscription a réussi. Bienvenue. Connectez-vous pour pouvoir créer vos montres et gérer votre panier."
         connexion
     } catch (error) {
         console.error("Erreur lors de l'inscription :", error.message)
-        message.value = "Erreur lors de l'inscription"
+        messageInscrit.value = "Erreur lors de l'inscription"
     }
 }
 
 const connexion = async () => {
+    messageInscrit.value = ""
     try {
         const response = await API.post(`/login`, userCo.value)
         const { token } = response.data // Récupérer le token depuis la réponse API
         store.setToken(token) // Enregistrer le token dans le store Pinia
-        message.value = "Vous êtes bien connecté. Bonjour"
+        messageCo.value = "Vous êtes bien connecté. Bonjour"
         router.push('/compte')
     } catch (error) {
         console.error("Erreur lors de la connexion :", error.message)
-        message.value = "Erreur lors de la connexion"
+        messageCo.value = "Erreur lors de la connexion"
     }
 }
 </script>
