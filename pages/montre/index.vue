@@ -41,6 +41,8 @@
 
 <style lang="scss">
 .les_montres{
+    padding-top: 5rem;
+    overflow: hidden;
     
     &__filtres{
         display: flex;
@@ -70,6 +72,10 @@
         flex-wrap: wrap;
         justify-content: space-evenly;
         margin: $m-medium 0;
+    }
+
+    @include small{
+        margin-top: 0;
     }
 }
 </style>

@@ -16,7 +16,7 @@
 
 <style lang="scss">
 .my_card{
-    width: 400px;
+    width: 350px;
     border-radius: 20px;
     box-shadow: 0 5px 10px rgba($color-black, 10%);
     overflow: hidden;
@@ -56,6 +56,10 @@
             width: fit-content;
             margin: auto;
         }
+    }
+
+    @include small{
+        width: 400px;
     }
 }
 </style>

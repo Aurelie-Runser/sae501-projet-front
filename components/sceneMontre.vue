@@ -45,7 +45,7 @@ const initScene = () => {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(
         75,
-        400 / 225,
+        16 / 9,
         0.1,
         1000
     );
