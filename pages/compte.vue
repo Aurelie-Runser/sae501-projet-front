@@ -38,7 +38,9 @@
 
 <style lang="scss">
 .compte{
-    margin-top: 5rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    overflow: hidden;
 
     &__section{
         margin: $m-big 0;
@@ -76,8 +78,9 @@
         align-items: center;
         justify-content: space-evenly;
         width: 700px;
+        max-width: 100%;
         height: 300px;
-        padding: $m-medium;
+        padding: $m-small;
         background: $color-white;
         border: 2px solid $color-main;
         border-radius: 10px;
@@ -85,11 +88,16 @@
         p{
             font-size: $font_size-litle;
             font-weight: $font_weight-medium;
+            text-align: center;
         }
     }
 
     @include small{
         margin-top: 0;
+
+        &__popup{
+            padding: $m-medium;
+        }
     }
 }
 </style>
