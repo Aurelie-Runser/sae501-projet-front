@@ -96,7 +96,6 @@
         </form>
         
         <myButton v-if="store.token && !memeUser" class="fiche_montre__bouton" @click="modifierMontre()">Créer une copie à mon nom</myButton>
-<<<<<<< HEAD
 
         <ul class="fiche_montre__rendu--infos crea_montre__rendu--infos--phone">
             <li class="info info__nom">{{ montrePreview.nom }}</li>
@@ -133,17 +132,15 @@
             <div class="fiche_montre__login--bouton">
                 <myButton lien="/login">Login</myButton>
             </div>
-=======
+        </div>
 
         <div v-if="!store.token" class="fiche_montre__login">
             <p>Pour modifier cette montre où l'ajouter à votre panier, veuillez vous connecter ou vous inscrire.</p>
             <myButton class="fiche_montre__bouton" lien="/login">Login</myButton>
->>>>>>> c202b332c3ea81d7a95cc7f2b9c6b665b001049a
-
         </div>
 
         <div v-if="supp" class="fiche_montre__popup-supp">
-            <p>Vous êtes sûr de vouloir supprimer cette montre ? Cette action est irréversible.</p>
+            <p>Vous êtes sûr de vouloir supprimer cette montre&nbsp? Cette action est irréversible.</p>
             <p>Cette montre disparaitra de votre panier et de ceux des autres utilisateurs.</p>
 
             <myButton @click="supp = false">Non, je la laisse</myButton>
