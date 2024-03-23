@@ -2,7 +2,7 @@
     <main class="les_montres">
         <myTitle>Les Montres</myTitle>
 
-        <myButton v-if="store.token" lien="/montre/creation">Créer ma montre de zéro</myButton>
+        <myButton v-if="store.token" lien="/montre/creation" class="les_montres__crea">Créer ma montre de zéro</myButton>
 
         <div class="les_montres__filtres">
             <div class="les_montres__filtres--filtre">
@@ -43,13 +43,19 @@
 .les_montres{
     padding-top: 5rem;
     overflow: hidden;
+
+    &__crea{
+        width: fit-content;
+        margin: auto;
+    }
     
     &__filtres{
         display: flex;
         flex-wrap: wrap;
         justify-content: space-evenly;
         gap: $m-litle;
-        margin: $m-medium 0;
+        margin: $m-medium auto;
+        max-width: $lg;
 
         &--filtre{
             display: flex;
@@ -71,11 +77,15 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-evenly;
-        margin: $m-medium 0;
+        margin: $m-medium auto;
     }
 
     @include small{
         margin-top: 0;
+
+        &__crea{
+            margin: 0
+        }
     }
 }
 </style>

@@ -13,6 +13,9 @@
     background-position: 50% 25%;
 
     &__texte{
+        max-width: 90vw;
+        margin-left: auto;
+        margin-right: auto;
         color: $color-white;
     }
 }

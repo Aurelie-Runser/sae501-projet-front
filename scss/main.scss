@@ -9,8 +9,10 @@
 
 main{
     padding: $m-small;
+
     @include small{
         padding: $m-big;
+        padding-bottom: 0;
     }
 }
 

@@ -7,7 +7,7 @@
                 <sceneMontre v-bind="montre"/>
             </div>
 
-            <ul class="crea_montre__rendu--infos">
+            <ul class="crea_montre__rendu--infos crea_montre__rendu--infos--pc">
                 <li class="info info__nom">{{ montre.nom }}</li>
 
                 <li class="info">
@@ -15,7 +15,7 @@
                     <span class="info__prix">{{ montre.bracelet_texture_prix }} €</span>
                 </li>
                 <li class="info">
-                    Boitier Texture (<span class="info__valeur">{{ montre.boitier_texture }}</span>) :
+                    Cadran (<span class="info__valeur">{{ montre.boitier_texture }}</span>) :
                     <span class="info__prix">{{ montre.boitier_texture_prix }} €</span>
                 </li>
                 <li class="info">
@@ -41,16 +41,16 @@
 
             <div class="crea_montre__form--input">
                 <label for="nom">Nom de la Montre</label>
-                <input class="crea_montre__form--input" type="text" name="nom" id="nom" required v-model="montre.nom">
+                <input class="crea_montre__form--input" type="text" name="nom" id="nom" size="15" required v-model="montre.nom">
             </div>
 
             <div class="crea_montre__form--input">
                 <label for="dernier_modifieur">Pseudo du créateur</label>
-                <input class="crea_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" required v-model="montre.createur">
+                <input class="crea_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" size="15" required v-model="montre.createur">
             </div>
 
             <div class="crea_montre__form--input">
-                <label for="boitier_texture">Texture du Boitier</label>
+                <label for="boitier_texture">Cadran</label>
                 <select class="crea_montre__form--select" name="boitier_texture" id="boitier_texture" v-model="montre.boitier_texture">
                     <option v-for="b in boitier_texture" :key="b.id_boitier_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
                 </select>
@@ -89,26 +89,78 @@
                 </select>
             </div>
 
-            <input class="crea_montre__form--bouton" type="submit" value="Enregistrer cette Montre"/>
+            <div class="crea_montre__form--bouton">
+                <input type="submit" value="Enregistrer cette Montre"/>
+            </div>
 
         </form>
+
+        <ul class="crea_montre__rendu--infos crea_montre__rendu--infos--phone">
+                <li class="info info__nom">{{ montre.nom }}</li>
+
+                <li class="info">
+                    Bracelet Texture (<span class="info__valeur">{{ montre.bracelet_texture }}</span>) :
+                    <span class="info__prix">{{ montre.bracelet_texture_prix }} €</span>
+                </li>
+                <li class="info">
+                    Cadran (<span class="info__valeur">{{ montre.boitier_texture }}</span>) :
+                    <span class="info__prix">{{ montre.boitier_texture_prix }} €</span>
+                </li>
+                <li class="info">
+                    Boitier Forme (<span class="info__valeur">{{ montre.boitier_forme }}</span>) :
+                    <span class="info__prix">{{ montre.boitier_forme_prix }} €</span>
+                </li>
+                <li class="info">
+                    Pierre (<span class="info__valeur">{{ montre.pierre_nom }}</span>) :
+                    <span class="info__prix">{{ montre.pierre_prix }} €</span>
+                </li>
+                <li class="info">
+                    Prix total : <span class="info__prix">{{ montre.prix_montre }} €</span>
+                </li>
+
+                <li class="info info__message">
+                    <p v-if="message">{{ message }}</p>
+                    <p v-else>(Enregistrez cette montre pour pouvoir l'ajouter à votre panier)</p>
+                </li>
+            </ul>
     </main>
 </template>
 
 <style lang="scss">
 .crea_montre{
+    padding-top: 5rem;
+    overflow: hidden;
 
     &__rendu{
         display: flex;
+        flex-direction: column;
         gap: $m-litle;
 
+        &--model{
+            width: 100%;
+        }
+        
         &--infos{
-            display: flex;
             flex-direction: column;
             gap: $m-small;
             margin: auto;
-           
-            
+
+            &--phone{
+                display: flex;
+
+                @include small{
+                    display: none;
+                }
+            }
+
+            &--pc{
+                display: none;
+
+                @include small{
+                    display: flex;
+                }
+            }
+               
             .info{
 
                 &__nom{
@@ -135,26 +187,42 @@
                 }
             }
         }
-        
-        &--model{
-            width: 66%;
-        }
+
     }
 
     &__form{
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        margin: $m-litle 0;
+        gap: $m-litle;
+        margin: $m-litle auto;
+        max-width: $xl2;
 
         &--input{
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 10px
         }
 
         &--bouton{
-            margin: $m-litle auto;
+            flex: none;
+            width: 100%;
+
+            * {
+                margin: auto;
+            }
+        }
+    }
+
+    @include small{
+        margin-top: 0;
+
+        &__rendu{
+            flex-direction: row;
+
+            &--model{
+                width: 66%;
+            }
         }
     }
 }
@@ -240,6 +308,7 @@ const updatePrice = async () => {
     montre.value.boitier_forme_prix = BoitierFormeSelect.prix
     montre.value.bracelet_texture_prix = BraceletTextureSelect.prix 
     montre.value.pierre_prix = PierreSelect.prix
+    montre.value.pierre_nom = PierreSelect.nom
 
     montre.value.prix_montre = BoitierTextureSelect.prix + BoitierFormeSelect.prix + BraceletTextureSelect.prix + PierreSelect.prix
 }
