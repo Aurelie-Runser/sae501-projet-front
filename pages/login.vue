@@ -14,6 +14,9 @@
     
             </section>
 
+            <div v-if="isCharging">
+                <loader/>
+            </div>
             <p class="login__error login__error--mobile" v-if="messageInscrit">{{ messageInscrit }}</p>
             <div class="login__deco"></div>
     
@@ -29,6 +32,9 @@
             </section>
         </div>
 
+        <div v-if="isCharging">
+            <loader/>
+        </div>
         <p class="login__error login__error--pc" v-if="messageInscrit">{{ messageInscrit }}</p>
         <p class="login__error" v-if="messageCo">{{ messageCo }}</p>
     </main>
@@ -112,29 +118,36 @@ const userNew = ref({})
 const messageInscrit = ref("")
 const userCo = ref({})
 const messageCo = ref("")
+const isCharging = ref(false)
 
 const inscription = async () => {
     messageCo.value = ""
+    isCharging.value = true
     try {
         await API.post(`/user/add`, userNew.value);
+        isCharging.value = false
         messageInscrit.value = "Votre inscription a réussi. Bienvenue. Connectez-vous pour pouvoir créer vos montres et gérer votre panier."
         connexion
     } catch (error) {
         console.error("Erreur lors de l'inscription :", error.message)
+        isCharging.value = false
         messageInscrit.value = "Erreur lors de l'inscription"
     }
 }
 
 const connexion = async () => {
     messageInscrit.value = ""
+    isCharging.value = true
     try {
         const response = await API.post(`/login`, userCo.value)
+        isCharging.value = false
         const { token } = response.data // Récupérer le token depuis la réponse API
         store.setToken(token) // Enregistrer le token dans le store Pinia
         messageCo.value = "Vous êtes bien connecté. Bonjour"
         router.push('/compte')
     } catch (error) {
         console.error("Erreur lors de la connexion :", error.message)
+        isCharging.value = false
         messageCo.value = "Erreur lors de la connexion"
     }
 }

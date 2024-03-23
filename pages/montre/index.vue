@@ -2,39 +2,45 @@
     <main class="les_montres">
         <myTitle>Les Montres</myTitle>
 
-        <myButton v-if="store.token" lien="/montre/creation" class="les_montres__crea">Créer ma montre de zéro</myButton>
-
-        <div class="les_montres__filtres">
-            <div class="les_montres__filtres--filtre">
-                <label for="boitier_forme">Forme du Boitier</label>
-                <select class="les_montres--select" name="boitier_forme" id="boitier_forme" v-model="selectedForme">
-                    <option value="">tous</option>
-                    <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom">{{ b.nom }}</option>
-                </select>
+        <div v-if="!isCharging">
+            <myButton v-if="store.token" lien="/montre/creation" class="les_montres__crea">Créer ma montre de zéro</myButton>
+    
+            <div class="les_montres__filtres">
+                <div class="les_montres__filtres--filtre">
+                    <label for="boitier_forme">Forme du Boitier</label>
+                    <select class="les_montres--select" name="boitier_forme" id="boitier_forme" v-model="selectedForme">
+                        <option value="">tous</option>
+                        <option v-for="b in boitier_forme" :key="b.id_boitier_forme" :value="b.nom">{{ b.nom }}</option>
+                    </select>
+                </div>
+                
+                <div class="les_montres__filtres--filtre">
+                    <label for="bracelet_texture">Texture du Bracelet</label>
+                    <select class="les_montres--select" name="bracelet_texture" id="bracelet_texture" v-model="selectedBracelet">
+                        <option value="">toutes</option>
+                        <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom">{{ b.nom }}</option>
+                    </select>
+                </div>
+                
+                <div class="les_montres__filtres--filtre">
+                    <label for="pierre">Pierre Précieuse</label>
+                    <select class="les_montres--select" name="pierre" id="pierre" v-model="selectedPierre">
+                        <option value="">toutes</option>
+                        <option v-for="p in pierres" :key="p.id_pierre" :value="p.nom">{{ p.nom }}</option>
+                    </select>
+                </div>
             </div>
-            
-            <div class="les_montres__filtres--filtre">
-                <label for="bracelet_texture">Texture du Bracelet</label>
-                <select class="les_montres--select" name="bracelet_texture" id="bracelet_texture" v-model="selectedBracelet">
-                    <option value="">toutes</option>
-                    <option v-for="b in bracelet_texture" :key="b.id_bracelet_texture" :value="b.nom">{{ b.nom }}</option>
-                </select>
-            </div>
-            
-            <div class="les_montres__filtres--filtre">
-                <label for="pierre">Pierre Précieuse</label>
-                <select class="les_montres--select" name="pierre" id="pierre" v-model="selectedPierre">
-                    <option value="">toutes</option>
-                    <option v-for="p in pierres" :key="p.id_pierre" :value="p.nom">{{ p.nom }}</option>
-                </select>
+    
+            <gridCard :valeurMontres="listeMontre"/>
+    
+            <div class="les_montres__pagination">
+                <myButton @click="lessMontre()" v-if="montreMin">Moins de Montres</myButton>
+                <myButton @click="moreMontre()" v-if="montreTotal">Plus de Montres</myButton>
             </div>
         </div>
 
-        <gridCard :valeurMontres="listeMontre"/>
-
-        <div class="les_montres__pagination">
-            <myButton @click="lessMontre()" v-if="montreMin">Moins de Montres</myButton>
-            <myButton @click="moreMontre()" v-if="montreTotal">Plus de Montres</myButton>
+        <div v-else>
+            <loader/>
         </div>
     </main>
 </template>
@@ -95,6 +101,7 @@ import {API} from '@/utils/axios'
 
 const store = useGlobalStore()
 
+const isCharging = ref(true)
 const montres = ref([])
 
 const boitier_forme = ref([])
@@ -110,6 +117,7 @@ const selectedPierre = ref('')
 const getMontres = async () => {
     const response = await API.get(`/montre`)
     montres.value = response.data
+    isCharging.value = false
 }
 
 const getBoitier_Forme = async () => {
@@ -161,28 +169,28 @@ const lessMontre = () =>{
 
 // fonction pour filtrer le nombre de Montre à affiché
 const listeMontre = computed(() => {
-  if (filteredMontres.value){
-    return filteredMontres.value.slice(0, 3*nbrMontre.value)
-  } else{
-    return []
-  }
+    if (filteredMontres.value){
+        return filteredMontres.value.slice(0, 3*nbrMontre.value)
+    } else{
+        return []
+    }
 })
 
 // pour cacher le bouton "plus de montre" si elles sont toutes affichées
 const montreTotal = computed(() => {
-  return listeMontre.value.length < filteredMontres.value.length
+    return listeMontre.value.length < filteredMontres.value.length
 })
 
 // pour cacher le bouton "plus de montre" si elles sont toutes affichées
 const montreMin = computed(() => {
-  return listeMontre.value.length >+ 3
+    return listeMontre.value.length >+ 3
 })
 
 // chargement de la base de données
 onMounted(async () => {
-  await getMontres()
-  await getBoitier_Forme()
-  await getBracelet_Texture()
-  await getPierre()
+    await getMontres()
+    await getBoitier_Forme()
+    await getBracelet_Texture()
+    await getPierre()
 })
 </script>

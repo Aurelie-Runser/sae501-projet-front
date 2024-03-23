@@ -2,37 +2,43 @@
     <main class="compte">
         <myTitle>Mon Compte</myTitle>
 
-        <section class="compte__section">
-            <h2>Mes Montres</h2>
-            <gridCard :valeurMontres="mesMontres"/>
-            <p v-if="mesMontres.length == 0" class="compte__section--texte">Vous n'avez créé aucune montre.</p>
-
-            <myButton class="compte__bouton" lien="/montre/creation">Créer une montre</myButton>
-        </section>
-
-        <hr class="compte__deco"/>
-        
-        <section class="compte__section">
-            <h2>Mon Panier</h2>
-            <gridCard :valeurMontres="monPanier"/>
-            <p v-if="monPanier.length == 0" class="compte__section--texte">Votre panier est vide.</p>
+        <div v-if="!isChargingPanier && !isChargingPanier">
+            <section class="compte__section">
+                <h2>Mes Montres</h2>
+                <gridCard :valeurMontres="mesMontres"/>
+                <p v-if="mesMontres.length == 0" class="compte__section--texte">Vous n'avez créé aucune montre.</p>
+    
+                <myButton class="compte__bouton" lien="/montre/creation">Créer une montre</myButton>
+            </section>
+    
+            <hr class="compte__deco"/>
             
-            <myButton v-if="monPanier.length != 0" class="compte__bouton" @click="suppPanier = 'acheter'">Acheter mon panier</myButton>
-            <myButton v-if="monPanier.length != 0" color="black" class="compte__bouton"  @click="suppPanier = 'vider'">Vider mon panier</myButton>
+            <section class="compte__section">
+                <h2>Mon Panier</h2>
+                <gridCard :valeurMontres="monPanier"/>
+                <p v-if="monPanier.length == 0" class="compte__section--texte">Votre panier est vide.</p>
+                
+                <myButton v-if="monPanier.length != 0" class="compte__bouton" @click="suppPanier = 'acheter'">Acheter mon panier</myButton>
+                <myButton v-if="monPanier.length != 0" color="black" class="compte__bouton"  @click="suppPanier = 'vider'">Vider mon panier</myButton>
+    
+                <div v-if="suppPanier.length != 0" class="compte__popup compte__popup--acheter">
+                    <p v-if="suppPanier == 'acheter'">Votre commande a été passée avec succès.</p>
+                    <p v-if="suppPanier == 'acheter'">Merci de votre commande !</p>
+    
+                    <p v-if="suppPanier == 'vider'">Votre panier a été vidé avec succès.</p>
+    
+                    <myButton @click="videPanier()">Ok</myButton>
+                </div>
+            </section>
+    
+            <hr class="compte__deco"/>
+    
+            <myButton class="compte__bouton" @click="deconnexion" color="black">Je me déconnecte</myButton>
+        </div>
 
-            <div v-if="suppPanier.length != 0" class="compte__popup compte__popup--acheter">
-                <p v-if="suppPanier == 'acheter'">Votre commande a été passée avec succès.</p>
-                <p v-if="suppPanier == 'acheter'">Merci de votre commande !</p>
-
-                <p v-if="suppPanier == 'vider'">Votre panier a été vidé avec succès.</p>
-
-                <myButton @click="videPanier()">Ok</myButton>
-            </div>
-        </section>
-
-        <hr class="compte__deco"/>
-
-        <myButton class="compte__bouton" @click="deconnexion" color="black">Je me déconnecte</myButton>
+        <div v-else>
+            <loader/>
+        </div>
     </main>
 </template>
 
@@ -112,17 +118,21 @@ const monPanier = ref([])
 const suppPanier = ref("")
 
 const store = useGlobalStore()
+const isChargingMontres = ref(true)
+const isChargingPanier = ref(true)
 
 // récupérations des tables pour afficher la montre et tous les paramètres
 const getMontres = async () => {
     const response = await API.get(`/user/${store.token}`)
     mesMontres.value = response.data
+    isChargingMontres.value = false
 }
 
 // récupérations des tables pour afficher la montre et tous les paramètres
 const getPanier = async () => {
     const response = await API.get(`/user/${store.token}/panier`)
     monPanier.value = response.data
+    isChargingPanier.value = false
 }
 
 // enregistrement de la montre modifiée dans la base de données
