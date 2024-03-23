@@ -27,7 +27,7 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background-image: url("@/img/montre.jpg");  
+        background-image: url("/img/montre.jpg");  
         background-position: top center;
         filter: brightness(80%);
     }
