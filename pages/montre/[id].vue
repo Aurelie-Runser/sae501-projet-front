@@ -7,14 +7,14 @@
                 <sceneMontre v-bind="montrePreview"/>
             </div>
 
-            <ul class="fiche_montre__rendu--infos">
+            <ul class="fiche_montre__rendu--infos crea_montre__rendu--infos--pc">
                 <li class="info info__nom">{{ montrePreview.nom }}</li>
                 <li class="info">
                     Bracelet Texture (<span class="info__valeur">{{ montrePreview.bracelet_texture }}</span>) :
                     <span class="info__prix">{{ montrePreview.bracelet_texture_prix }} €</span>
                 </li>
                 <li class="info">
-                    Boitier Texture (<span class="info__valeur">{{ montrePreview.boitier_texture }}</span>) :
+                    Cadran (<span class="info__valeur">{{ montrePreview.boitier_texture }}</span>) :
                     <span class="info__prix">{{ montrePreview.boitier_texture_prix }} €</span>
                 </li>
                 <li class="info">
@@ -41,16 +41,16 @@
         <form v-if="store.token && memeUser" @submit.prevent="modifierMontre" class="fiche_montre__form">
             <div class="fiche_montre__form--input">
                 <label for="nom">Nom de la Montre</label>
-                <input class="fiche_montre__form--input" type="text" name="nom" id="nom" v-model="montrePreview.nom">
+                <input class="fiche_montre__form--input" type="text" name="nom" id="nom" size="15" v-model="montrePreview.nom">
             </div>
             
             <div class="fiche_montre__form--input">
                 <label for="dernier_modifieur">Pseudo du créateur</label>
-                <input class="fiche_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montrePreview.createur">
+                <input class="fiche_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" size="15" v-model="montrePreview.createur">
             </div>
             
             <div class="fiche_montre__form--input">
-                <label for="boitier_texture">Texture du Boitier</label>
+                <label for="boitier_texture">Dadran</label>
                 <select class="fiche_montre__form--select" name="boitier_texture" id="boitier_texture" v-model="montrePreview.boitier_texture">
                     <option v-for="b in boitier_texture" :key="b.id_boitier_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
                 </select>
@@ -95,11 +95,43 @@
             </div>
         </form>
         
-        <myButton v-if="!memeUser" class="fiche_montre__bouton" @click="modifierMontre()">Créer une copie à mon nom</myButton>
+        <myButton v-if="store.token && !memeUser" class="fiche_montre__bouton" @click="modifierMontre()">Créer une copie à mon nom</myButton>
+
+        <ul class="fiche_montre__rendu--infos crea_montre__rendu--infos--phone">
+            <li class="info info__nom">{{ montrePreview.nom }}</li>
+            <li class="info">
+                Bracelet Texture (<span class="info__valeur">{{ montrePreview.bracelet_texture }}</span>) :
+                <span class="info__prix">{{ montrePreview.bracelet_texture_prix }} €</span>
+            </li>
+            <li class="info">
+                Cadran (<span class="info__valeur">{{ montrePreview.boitier_texture }}</span>) :
+                <span class="info__prix">{{ montrePreview.boitier_texture_prix }} €</span>
+            </li>
+            <li class="info">
+                Boitier Forme (<span class="info__valeur">{{ montrePreview.boitier_forme }}</span>) :
+                <span class="info__prix">{{ montrePreview.boitier_forme_prix }} €</span>
+            </li>
+            <li class="info">
+                Pierre (<span class="info__valeur">{{ montrePreview.pierre_nom }}</span>) :
+                <span class="info__prix">{{ montrePreview.pierre_prix }} €</span>
+            </li>
+            <li class="info">
+                Prix total : <span class="info__prix">{{ montrePreview.prix_montre }} €</span>
+            </li>
+            
+            <li class="info info__bouton" v-if="store.token">
+                <myButton v-if="!isMontreInPanier && store.token" @click="ajouterPanier">Ajouter au Panier</myButton>
+                <myButton v-if="isMontreInPanier && store.token" @click="supprimerPanier">Supprimer du Panier</myButton>
+            </li>
+
+            <li class="info info__message">{{ message }}</li>
+        </ul>
 
         <div v-if="!store.token" class="fiche_montre__login">
             <p>Pour modifier cette montre où l'ajouter à votre panier, veuillez vous connecter ou vous inscrire.</p>
-            <myButton class="fiche_montre__bouton--supp" lien="/login">Login</myButton>
+            <div class="fiche_montre__login--bouton">
+                <myButton lien="/login">Login</myButton>
+            </div>
 
         </div>
 
@@ -116,18 +148,38 @@
 
 <style lang="scss">
 .fiche_montre{
+    padding-top: 5rem;
+    overflow: hidden;
 
     &__rendu{
         display: flex;
+        flex-wrap: wrap;
         gap: $m-litle;
 
+        &--model{
+            width: 100%;
+        }
+
         &--infos{
-            display: flex;
             flex-direction: column;
-            justify-content: center;
             gap: $m-small;
             margin: auto;
-           
+            
+            &--phone{
+                display: flex;
+
+                @include small{
+                    display: none;
+                }
+            }
+
+            &--pc{
+                display: none;
+
+                @include small{
+                    display: flex;
+                }
+            }
             
             .info{
 
@@ -147,7 +199,7 @@
                 }
 
                 &__bouton{
-                    margin: $m-small 0;
+                    margin: $m-small auto;
                 }
 
                 &__message{
@@ -157,17 +209,15 @@
                 }
             }
         }
-        
-        &--model{
-            width: 66%;
-        }
     }
 
     &__form{
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        margin: $m-litle 0;
+        gap: $m-litle;
+        margin: $m-litle auto;
+        max-width: $xl2;
 
         &--input{
             display: flex;
@@ -192,8 +242,14 @@
     }
 
     &__login{
-        margin: $m-medium 0;
+        margin: $m-medium auto;
         text-align: center;
+
+        &--bouton{
+            width: fit-content;
+            margin: auto;
+            margin-top: $m-small
+        }
     }
 
     &__popup-supp{
@@ -204,13 +260,26 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        gap: $m-small;
         width: 700px;
-        height: 300px;
-        padding: $m-medium;
+        max-width: 100%;
+        height: fit-content;
+        min-height: 300px;
+        padding: $m-litle;
         background: $color-white;
         border: 2px solid $color-main;
         border-radius: 10px;
+        text-align: center;
+    }
+
+    @include small{
+         &__rendu{
+
+            &--model{
+                width: 66%;
+            }
+         }
     }
 }
 </style>
@@ -291,6 +360,7 @@ const updatePrice = async () => {
     montre.value.boitier_forme_prix = BoitierFormeSelect.prix
     montre.value.bracelet_texture_prix = BraceletTextureSelect.prix 
     montre.value.pierre_prix = PierreSelect.prix
+    montre.value.pierre_nom = PierreSelect.nom
 
     montre.value.prix_montre = BoitierTextureSelect.prix + BoitierFormeSelect.prix + BraceletTextureSelect.prix + PierreSelect.prix
 }
