@@ -1,6 +1,6 @@
 <template>
     <main class="error">
-        <myTitle>Erreur {{ error.statusCode }}</myTitle>
+        <myTitle class="error__title">Erreur {{ error.statusCode }}</myTitle>
         <p>{{ error.statusMessage }}</p>
     
         <myButton class="error__bouton" lien="/">Retourner à l'accueil</myButton>
@@ -9,7 +9,13 @@
 
 <style lang="scss">
 .error {
+    padding: 0;
     text-align: center;
+
+    &__title{
+        margin: 0;
+        margin-bottom: $m-big;
+    }
     
     &__bouton{
         margin: 40px auto;
