@@ -7,16 +7,16 @@
         <nav class="header__nav" v-if="menuIsOpen">
             <ul class="header__liste">
                 <li class="header__item">
-                    <RouterLink to="/">Accueil</RouterLink>
+                    <RouterLink to="/" @click="openMenu">Accueil</RouterLink>
                 </li>
                 <li class="header__item">
-                    <RouterLink to="/montre">Les Montres</RouterLink>
+                    <RouterLink to="/montre" @click="openMenu">Les Montres</RouterLink>
                 </li>
                 <li class="header__item" v-if="!store.token">
-                    <RouterLink to="/login">Login</RouterLink>
+                    <RouterLink to="/login" @click="openMenu">Login</RouterLink>
                 </li>
                 <li class="header__item" v-if="store.token">
-                    <RouterLink to="/compte">Mon Compte</RouterLink>
+                    <RouterLink to="/compte" @click="openMenu">Mon Compte</RouterLink>
                 </li>
             </ul>
         </nav>
