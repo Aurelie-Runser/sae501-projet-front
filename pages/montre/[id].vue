@@ -50,7 +50,7 @@
             </div>
             
             <div class="fiche_montre__form--input">
-                <label for="boitier_texture">Dadran</label>
+                <label for="boitier_texture">Cadran</label>
                 <select class="fiche_montre__form--select" name="boitier_texture" id="boitier_texture" v-model="montrePreview.boitier_texture">
                     <option v-for="b in boitier_texture" :key="b.id_boitier_texture" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
                 </select>
@@ -128,7 +128,7 @@
         </ul>
 
         <div v-if="!store.token" class="fiche_montre__login">
-            <p>Pour modifier cette montre où l'ajouter à votre panier, veuillez vous connecter ou vous inscrire.</p>
+            <p>Pour modifier cette montre ou l'ajouter à votre panier, veuillez vous connecter ou vous inscrire.</p>
             <div class="fiche_montre__login--bouton">
                 <myButton lien="/login">Login</myButton>
             </div>
@@ -136,7 +136,7 @@
         </div>
 
         <div v-if="supp" class="fiche_montre__popup-supp">
-            <p>Vous êtes sur de vouloir supprimer cette montre ? Cette action est irréversible.</p>
+            <p>Vous êtes sûr de vouloir supprimer cette montre ? Cette action est irréversible.</p>
             <p>Cette montre disparaitra de votre panier et de ceux des autres utilisateurs.</p>
 
             <myButton @click="supp = false">Non, je la laisse</myButton>

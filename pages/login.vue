@@ -36,7 +36,7 @@
 
 <style lang="scss">
 .login{
-    margin-top: 5rem;
+    padding-top: 5rem;
     
     &__sections{
         display: flex;
@@ -71,10 +71,6 @@
         border: none;
         border-radius: 100%;
         background: $color-main;
-    }
-
-    @include small{
-        margin-top: 0;
     }
 
     @include xlarge{
