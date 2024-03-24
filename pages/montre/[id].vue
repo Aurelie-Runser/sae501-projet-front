@@ -134,11 +134,6 @@
             </div>
         </div>
 
-        <div v-if="!store.token" class="fiche_montre__login">
-            <p>Pour modifier cette montre où l'ajouter à votre panier, veuillez vous connecter ou vous inscrire.</p>
-            <myButton class="fiche_montre__bouton" lien="/login">Login</myButton>
-        </div>
-
         <div v-if="supp" class="fiche_montre__popup-supp">
             <p>Vous êtes sûr de vouloir supprimer cette montre&nbsp? Cette action est irréversible.</p>
             <p>Cette montre disparaitra de votre panier et de ceux des autres utilisateurs.</p>
