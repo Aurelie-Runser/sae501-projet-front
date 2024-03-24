@@ -15,6 +15,9 @@
 <style lang="scss">
 .accueil{
     width: 100vw;
+    height: 80vh;
+    display: grid;
+    place-items: center;
 
     &::before{
         content: "";
@@ -32,7 +35,6 @@
 
     &__section{
         width: 100%;
-        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
