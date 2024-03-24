@@ -181,7 +181,7 @@ function onLoaded(collada) {
 var onProgress = function (data) {
     if (data.lengthComputable) {
         var percentComplete = (data.loaded / data.total) * 100;
-        console.log(Math.round(percentComplete, 2) + "% downloaded");
+        // console.log(Math.round(percentComplete, 2) + "% downloaded");
     }
 };
   

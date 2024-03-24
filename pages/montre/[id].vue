@@ -41,12 +41,12 @@
         <form v-if="store.token && memeUser" @submit.prevent="modifierMontre" class="fiche_montre__form">
             <div class="fiche_montre__form--input">
                 <label for="nom">Nom de la Montre</label>
-                <input class="fiche_montre__form--input" type="text" name="nom" id="nom" size="15" v-model="montrePreview.nom">
+                <input class="fiche_montre__form--in" type="text" name="nom" id="nom" v-model="montrePreview.nom">
             </div>
             
             <div class="fiche_montre__form--input">
                 <label for="dernier_modifieur">Pseudo du créateur</label>
-                <input class="fiche_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" size="15" v-model="montrePreview.createur">
+                <input class="fiche_montre__form--in" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" v-model="montrePreview.createur">
             </div>
             
             <div class="fiche_montre__form--input">
@@ -218,7 +218,7 @@
     &__form{
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: center;
         gap: $m-litle;
         margin: $m-litle auto;
         max-width: $xl2;
@@ -227,6 +227,14 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+        }
+
+        &--in{
+            width: 150px;
+        }
+
+        &--select{
+            width: min-content;
         }
 
         &--boutons{
@@ -278,12 +286,19 @@
     }
 
     @include small{
-         &__rendu{
+        &__rendu{
 
             &--model{
                 width: 66%;
             }
-         }
+        }
+        
+        &__form{
+            
+            &--in{
+                width: 175px;
+            }
+        }
     }
 }
 </style>
