@@ -15,7 +15,6 @@
 <style lang="scss">
 .accueil{
     width: 100vw;
-    min-height: 100vh;
 
     &::before{
         content: "";
