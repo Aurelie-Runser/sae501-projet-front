@@ -7,7 +7,7 @@
                 <sceneMontre v-bind="montrePreview"/>
             </div>
 
-            <ul class="fiche_montre__rendu--infos crea_montre__rendu--infos--pc">
+            <ul class="fiche_montre__rendu--infos fiche_montre__rendu--infos--pc">
                 <li class="info info__nom">{{ montrePreview.nom }}</li>
                 <li class="info">
                     Bracelet Texture (<span class="info__valeur">{{ montrePreview.bracelet_texture }}</span>) :
@@ -97,7 +97,7 @@
         
         <myButton v-if="store.token && !memeUser" class="fiche_montre__bouton" @click="modifierMontre()">Créer une copie à mon nom</myButton>
 
-        <ul class="fiche_montre__rendu--infos crea_montre__rendu--infos--phone">
+        <ul class="fiche_montre__rendu--infos fiche_montre__rendu--infos--phone">
             <li class="info info__nom">{{ montrePreview.nom }}</li>
             <li class="info">
                 Bracelet Texture (<span class="info__valeur">{{ montrePreview.bracelet_texture }}</span>) :
